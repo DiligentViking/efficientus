@@ -16,30 +16,42 @@ const createTodo = (lists, desc, doDate, priority) => {
 }
 
 
+const readTodo = (todoId) => {
+  return JSON.parse(localStorage.getItem(todoId));
+}
+
 const readAllTodos = (list) => {
-  const todosInList = [];
+  const todos = [];
 
   console.log(`Todos for "${list}":`);
   for (let x = 0; x < localStorage.length; x++) {
-    const data = localStorage.getItem(x);
-    const todo = JSON.parse(data);
+    const todoData = readTodo(x);
 
-    if (todo.lists.includes(list) || !list) {
-      console.log(todo);
-      todosInList.push(todo);
+    if (!list || todoData.lists.includes(list) && (!todoData.lists.includes('trash') || list == 'trash')) {
+      console.log(todoData);
+      todos.push(todoData);
     }
   }
 
-  return todosInList;
+  return todos;
 }
 
 
 const updateTodo = (todoId, prop, val) => {
-  const todoData = JSON.parse(localStorage.getItem(todoId));
+  const todoData = readTodo(todoId);
 
   todoData[prop] = val;
 
   localStorage.setItem(todoId, JSON.stringify(todoData));
+}
+
+
+const deleteTodo = (todoId, trash=true) => {
+  if (trash) {
+    const todoData = readTodo(todoId);
+
+    todoData.lists.push('trash');
+  }
 }
 
 
