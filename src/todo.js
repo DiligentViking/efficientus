@@ -15,6 +15,7 @@ const createTodo = (lists, desc, doDate, priority) => {
   console.log(`Todo "${desc.slice(0, 5)}..." (${todoId}) created.`);
 }
 
+
 const readAllTodos = (list) => {
   const todosInList = [];
 
@@ -23,7 +24,7 @@ const readAllTodos = (list) => {
     const data = localStorage.getItem(x);
     const todo = JSON.parse(data);
 
-    if (todo.lists.includes(list)) {
+    if (todo.lists.includes(list) || !list) {
       console.log(todo);
       todosInList.push(todo);
     }
@@ -32,4 +33,14 @@ const readAllTodos = (list) => {
   return todosInList;
 }
 
-export { createTodo, readAllTodos };
+
+const updateTodo = (todoId, prop, val) => {
+  const todoData = JSON.parse(localStorage.getItem(todoId));
+
+  todoData[prop] = val;
+
+  localStorage.setItem(todoId, JSON.stringify(todoData));
+}
+
+
+export { createTodo, readAllTodos, updateTodo, };
