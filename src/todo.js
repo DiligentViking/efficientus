@@ -12,7 +12,6 @@ const createTodo = (lists, desc, doDate, priority) => {
     todoId,
     JSON.stringify(todoData)
   );
-  console.log(`Todo "${desc.slice(0, 5)}..." (${todoId}) created.`);
 }
 
 
@@ -28,7 +27,6 @@ const readAllTodos = (list) => {
     const todoData = readTodo(x);
 
     if (!list || todoData.lists.includes(list) && (!todoData.lists.includes('trash') || list == 'trash')) {
-      console.log(todoData);
       todos.push(todoData);
     }
   }
@@ -51,8 +49,10 @@ const deleteTodo = (todoId, trash=true) => {
     const todoData = readTodo(todoId);
 
     todoData.lists.push('trash');
+
+    localStorage.setItem(todoId, JSON.stringify(todoData));
   }
 }
 
 
-export { createTodo, readAllTodos, updateTodo, };
+export { createTodo, readTodo, readAllTodos, updateTodo, deleteTodo };

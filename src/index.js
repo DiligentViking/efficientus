@@ -1,4 +1,4 @@
-import { createTodo, readAllTodos, updateTodo, } from './todo.js';
+import { createTodo, readTodo, readAllTodos, updateTodo, deleteTodo } from './todo.js';
 
 console.log(`
 ---------------
@@ -12,6 +12,6 @@ createTodo(['today'], 'Feed all of the scats', '2025', 5);
 createTodo(['today', 'tomorrow'], 'Pickleball with S at the park.', '2025', 3);
 createTodo(['tomorrow'], 'Finish v1.0 of Todo app.', '2025', 7);
 
-updateTodo(1, 'desc', 'scat cat');
+readTodo(2);
 
-readAllTodos();
+console.table(readAllTodos());
