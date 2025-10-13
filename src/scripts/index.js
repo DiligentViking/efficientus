@@ -1,3 +1,6 @@
+import '../styles/index.css';
+import odinImage from '../assets/images/odin.svg';  // If you want to set the image in JS
+
 import { createTodo, readTodo, readAllTodos, updateTodo, deleteTodo } from './todo.js';
 
 console.log(`
