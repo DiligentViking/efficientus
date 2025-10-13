@@ -1,6 +1,7 @@
-const createTodo = (lists, desc, doDate, priority) => {
-  const todoId = localStorage.length;
+import { getTodos, setTodos } from './storage.js';
 
+
+const createTodo = (lists, desc, doDate, priority, todos=getTodos()) => {
   const todoData = {
     lists,
     desc,
@@ -8,51 +9,52 @@ const createTodo = (lists, desc, doDate, priority) => {
     priority
   };
 
-  localStorage.setItem(
-    todoId,
-    JSON.stringify(todoData)
-  );
+  todos.push(todoData);
+
+  setTodos(todos);
 }
 
 
-const readTodo = (todoId) => {
-  return JSON.parse(localStorage.getItem(todoId));
-}
-
-const readAllTodos = (list) => {
-  const todos = [];
+const readAllTodos = (list, todos=getTodos()) => {
+  const matchingTodos = [];
 
   console.log(`Todos for "${list}":`);
-  for (let x = 0; x < localStorage.length; x++) {
-    const todoData = readTodo(x);
-
+  for (const todoData of todos) {
     if (!list || todoData.lists.includes(list) && (!todoData.lists.includes('trash') || list == 'trash')) {
-      todos.push(todoData);
+      matchingTodos.push(todoData);
     }
   }
 
-  return todos;
+  return matchingTodos;
 }
 
 
-const updateTodo = (todoId, prop, val) => {
-  const todoData = readTodo(todoId);
+const updateTodo = (todoId, prop, val, todos=getTodos()) => {
+  todos[todoId][prop] = val;
 
-  todoData[prop] = val;
-
-  localStorage.setItem(todoId, JSON.stringify(todoData));
+  setTodos(todos);
 }
 
 
-const deleteTodo = (todoId, trash=true) => {
+const deleteTodo = (todoId, trash=true, todos=getTodos()) => {
   if (trash) {
-    const todoData = readTodo(todoId);
+    todos[todoId].lists.push('trash');
 
-    todoData.lists.push('trash');
-
-    localStorage.setItem(todoId, JSON.stringify(todoData));
+    setTodos(todos);
   }
 }
 
 
-export { createTodo, readTodo, readAllTodos, updateTodo, deleteTodo };
+//////////
+
+const fetchLists = () => {
+  const lists = [];
+
+  for (let x = 0; x < localStorage.length; x++) {
+    const todoData = readTodo(x);
+
+  }
+}
+
+
+export { createTodo, readAllTodos, updateTodo, deleteTodo };
