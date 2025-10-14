@@ -1,6 +1,6 @@
 import '../styles/index.css';
 
-import { createProfile } from './storage.js';
+import { createProfile, createList, readLists } from './storage.js';
 import { createTodo, readAllTodos, updateTodo, deleteTodo } from './todo.js';
 
 console.log(`
@@ -18,3 +18,8 @@ createTodo(['tomorrow'], 'Finish v1.0 of Todo app.', '2025', 7);
 ;
 
 console.table(readAllTodos());
+
+
+/* Dom Stuff */
+
+

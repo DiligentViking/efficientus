@@ -45,16 +45,4 @@ const deleteTodo = (todoId, trash=true, todos=getTodos()) => {
 }
 
 
-//////////
-
-const fetchLists = () => {
-  const lists = [];
-
-  for (let x = 0; x < localStorage.length; x++) {
-    const todoData = readTodo(x);
-
-  }
-}
-
-
 export { createTodo, readAllTodos, updateTodo, deleteTodo };
