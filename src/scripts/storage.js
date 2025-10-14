@@ -1,53 +1,50 @@
-const createProfile = (profileKey='local1') => {
-  const profileData = {
-    todos: [],
-    lists: [],
-    settings: {},
-  };
-  
-  localStorage.setItem(profileKey, JSON.stringify(profileData));
+const createProfile = () => {
+  if (localStorage.length) {
+    return;
+  }
+
+  localStorage.setItem('todos', '[]');
+  localStorage.setItem('lists', '[]');
+  localStorage.setItem('settings', '{}');
 }
 
 
-const createList = (listName, profileKey='local1') => {
-  const profileJSON = localStorage.getItem(profileKey);
-  const profileData = JSON.parse(profileJSON);
+const createList = (listName) => {
+  const listsJSON = localStorage.getItem('lists');
+  const lists = JSON.parse(listsJSON);
 
-  if (profileData.lists.includes(listName)) {
+  if (lists.includes(listName)) {
     return 0;
   }
 
-  profileData.lists.push(listName);
+  lists.push(listName);
 
-  localStorage.setItem(profileKey, JSON.stringify(profileData));
+  localStorage.setItem('lists', JSON.stringify(lists));
 
   return 1;
 }
 
 
-const readLists = (profileKey='local1') => {
-  const profileJSON = localStorage.getItem(profileKey);
-  const profileData = JSON.parse(profileJSON);
+const readLists = () => {
+  const listsJSON = localStorage.getItem('lists');
+  const lists = JSON.parse(listsJSON);
 
-  return profileData.lists;
+  return lists;
 }
 
 
-const getTodos = (profileKey='local1') => {
-  const profileJSON = localStorage.getItem(profileKey);
-  const profileData = JSON.parse(profileJSON);
+const getTodos = () => {
+  const todosJSON = localStorage.getItem('todos');
+  const todos = JSON.parse(todosJSON);
 
-  return profileData.todos;
+  return todos;
 }
 
 
-const setTodos = (todos, profileKey='local1') => {
-  const profileJSON = localStorage.getItem(profileKey);
-  const profileData = JSON.parse(profileJSON);
+const setTodos = (todos) => {
+  const todosJSON = JSON.stringify(todos);
 
-  profileData.todos = todos;
-
-  localStorage.setItem(profileKey, JSON.stringify(profileData));
+  localStorage.setItem('todos', todosJSON);
 }
 
 
