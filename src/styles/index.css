@@ -16,12 +16,54 @@
   font-display: block;
 }
 
+
+/* Base Styles */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+ul {
+  list-style: none;
+}
+
 body {
-  background-color: rgb(240, 194, 135);
+  background-color: rgb(240, 194, 135, 1);
   font-family: 'ubuntu-regular';
+
+  height: 100vh;
+  display: flex;
+}
+
+
+/* Sidebar */
+
+.sidebar {
+  background-color: rgb(0, 0, 0, 0.2);
+  padding: 1rem;
 }
 
 h1 {
   font-family: 'ubuntu-medium';
+  font-size: 1.75rem;
   letter-spacing: -0.5px;
+  padding-bottom: 0.75rem;
+  /* border-bottom: 1px solid rgb(122, 78, 48, 0.6); */
+  margin-left: -0.5rem;
+  margin-bottom: 1rem;
+}
+
+.sidebar-label {
+  color: rgb(72, 58, 41);
+  margin-bottom: 0.5rem;
+}
+
+.sidebar-group {
+  margin-bottom: 1.25rem;
+}
+
+.sidebar-item {
+  font-size: 1.25rem;
 }
