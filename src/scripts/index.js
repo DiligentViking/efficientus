@@ -45,11 +45,28 @@ function appendSingleElem(parentNode, elem, text=null, attributes={}) {  // Use 
 
 /* Sidebar */
 
+// List loading //
+
 const sidebarGroupLists = document.querySelector('.sidebar-group.lists');
 
 const listsArray = readLists();
 
 for (const list of listsArray) {
   if (list == 'Today') continue;
-  appendSingleElem(sidebarGroupLists, 'li', list, {class: 'sidebar-item'});
+  appendSingleElem(sidebarGroupLists, 'li', list, {'class': 'sidebar-item', 'data-list': list});
 }
+
+// Sidebar-item selection functionality //
+
+const sidebarMenu = document.querySelector('.sidebar-menu');
+
+sidebarMenu.addEventListener('click', (e) => {
+  const dataList = e.target.dataset.list;
+  if (dataList) {
+    const prevSelected = sidebarMenu.querySelector('.selected');
+    if (prevSelected) prevSelected.classList.remove('selected');
+    e.target.classList.add('selected');
+  }
+});
+
+document.querySelector('.sidebar-item.today').click();

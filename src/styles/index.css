@@ -87,9 +87,8 @@ h1 {
   transition: none;
 }
 
-.sidebar-item:active {
-  background-color: rgb(72, 58, 41, 0.25);
-  cursor: pointer;  /* needs to be grabbing when moving */
+.sidebar-item.selected {
+  background-color: rgb(72, 58, 41, 0.3);
 }
 
 .sidebar-item + .sidebar-item {
