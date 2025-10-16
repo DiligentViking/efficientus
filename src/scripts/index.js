@@ -70,3 +70,9 @@ sidebarMenu.addEventListener('click', (e) => {
 });
 
 document.querySelector('.sidebar-item.today').click();
+
+
+/* Main */
+
+// Lists //
+
