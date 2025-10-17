@@ -111,6 +111,7 @@ body {
   cursor: default;
 }
 
+/* New-list button */
 .sidebar-label.lists:hover > .new-list {
   opacity: 1;
   transition: none;
@@ -143,9 +144,10 @@ body {
   background-color: rgb(72, 58, 41);
   color: rgb(204 165 115);
 }
+/* ----- */
 
 
-/* Content */
+/* Content Area */
 
 main {
   flex: 1;
@@ -157,6 +159,8 @@ main {
 }
 
 
+/* Task Scroll */
+
 .task-scroll {
   display: block;
   overflow-y: clip;
@@ -166,6 +170,7 @@ main {
   right: 0;
 }
 
+/* Scroll decor */
 .scroll-decor {
   background-color: rgb(225, 175, 95);
   box-shadow: 2px 2px 3px rgb(0, 0, 0, 0.25);
@@ -198,6 +203,7 @@ main {
   right: 0;
   transform: translate(0.5rem, 0.1875rem);
 }
+/* ----- */
 
 .scroll-content {
   background-color: rgb(225, 175, 95);
