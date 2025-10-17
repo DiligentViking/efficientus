@@ -177,11 +177,11 @@ main {
   border-radius: 0.25rem;
   height: 1.25rem;
   position: relative;
-  z-index: 100;
+  z-index: 1;
 }
 
-.scroll-decor::before,
-.scroll-decor::after {
+.scroll-decor-before,
+.scroll-decor-after {
   background-color: rgb(150, 100, 45);
   box-shadow: 1px 1px 2px rgb(0, 0, 0, 0.4);
   content: '';
@@ -191,17 +191,20 @@ main {
   width: 0.75rem;
   position: absolute;
   top: 0;
-  z-index: -2;
 }
 
-.scroll-decor::before {
+.scroll-decor-before {
   left: 0;
   transform: translate(-0.5rem, 0.1875rem);
 }
 
-.scroll-decor::after {
+.scroll-decor-after {
   right: 0;
   transform: translate(0.5rem, 0.1875rem);
+}
+
+.scroll-decor-container:active + .scroll-content {
+  translate: 0 -110%;
 }
 /* ----- */
 
@@ -240,8 +243,4 @@ main {
 .progress-bar:hover {
   background-color: rgb(120, 135, 95, 0.7);
   cursor: default;
-}
-
-.scroll-decor:active + .scroll-content {
-  translate: 0 -110%;
 }
