@@ -261,22 +261,35 @@ main {
 /* Todos */
 
 .todo {
-  border: 1px solid rgb(80, 50, 25, 0.75);
+  border: 1px solid rgb(80, 50, 25, 0.5);
   border-radius: 1rem;
   padding: 0.75rem;
   max-width: 700px;
   transform: translate(-0.75rem);
   display: flex;
-  align-items: center;
+  /* align-items: center; */
+}
+
+.check-icon {
+  position: relative;
+}
+
+.check-icon > svg {
+  color: rgb(95, 120, 55);
+  width: 3rem;
+  height: 3rem;
+  position: absolute;
+  transform: translate(-0.5625rem, -0.4375rem);
 }
 
 .checkbox {
   appearance: none;
   background: none;
-  border: 1px solid rgb(80, 50, 25, 0.75);
+  border: 2px solid rgb(80, 50, 25, 0.75);
   border-radius: 0.5rem;
   height: 1.75rem;
   width: 1.75rem;
+  margin-top: 0.1875rem;
   margin-right: 0.75rem;
 }
 
@@ -292,6 +305,7 @@ main {
 
 .notes {
   color: rgb(80, 50, 25, 0.75);
+  color: rgb(0, 0, 0, 0.5);
   font-size: 0.75rem;
 }
 
