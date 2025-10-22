@@ -29,6 +29,13 @@ ul {
   list-style: none;
 }
 
+button {
+  background: none;
+  border: none;
+  font-family: inherit;
+  font-size: 0.75rem;
+}
+
 ::selection {
   color: inherit;
   background-color: rgb(118, 161, 98);
@@ -37,6 +44,7 @@ ul {
 body {
   background-color: rgb(240, 194, 135, 1);
   font-family: 'ubuntu-regular';
+  font-size: 1rem;
 
   height: 100vh;
   display: flex;
@@ -158,11 +166,15 @@ main {
   position: relative;
 }
 
+.content-title {
+  margin-bottom: 2rem;
+}
+
 
 /* Task Scroll */
 
 .task-scroll {
-  display: block;
+  display: none;
   overflow-y: clip;
   width: 10.5rem;
   position: absolute;
@@ -195,12 +207,12 @@ main {
 
 .scroll-decor-before {
   left: 0;
-  transform: translate(-0.5rem, 0.1875rem);
+  transform: translate(-0.625rem, 0.1875rem);
 }
 
 .scroll-decor-after {
   right: 0;
-  transform: translate(0.5rem, 0.1875rem);
+  transform: translate(0.625rem, 0.1875rem);
 }
 
 .scroll-decor-container:active + .scroll-content {
@@ -243,4 +255,67 @@ main {
 .progress-bar:hover {
   background-color: rgb(120, 135, 95, 0.7);
   cursor: default;
+}
+
+
+/* Todos */
+
+.todo {
+  border: 1px solid rgb(80, 50, 25, 0.75);
+  border-radius: 1rem;
+  padding: 0.75rem;
+  max-width: 700px;
+  transform: translate(-0.75rem);
+  display: flex;
+  align-items: center;
+}
+
+.checkbox {
+  appearance: none;
+  background: none;
+  border: 1px solid rgb(80, 50, 25, 0.75);
+  border-radius: 0.5rem;
+  height: 1.75rem;
+  width: 1.75rem;
+  margin-right: 0.75rem;
+}
+
+.row-group {
+  display: flex;
+  align-items: baseline;
+}
+
+.description {
+  margin-right: 1rem;
+  margin-bottom: 0.25rem;
+}
+
+.notes {
+  color: rgb(80, 50, 25, 0.75);
+  font-size: 0.75rem;
+}
+
+.priority {
+  /* background-color: rgb(0, 0, 0, 0.15); */
+  color: rgb(185, 115, 55);
+  /* color: rgb(216, 68, 9); */
+  border-radius: 0.5rem;
+  padding: 0.25rem 0.5rem;
+  transform: translate(-0.5rem);
+  display: flex;
+  transition: background-color 0.25s ease, color 0.25s ease;
+}
+
+.priority > svg {
+  color: rgb(185, 115, 55);
+  /* color: rgb(216, 68, 9); */
+  width: 0.875rem;
+  height: 0.875rem;
+  transform: translate(0, 0.0625rem);
+  margin-right: 0.125rem;
+}
+
+.priority:hover {
+  background-color: rgb(0, 0, 0, 0.10);
+  cursor: pointer;
 }
