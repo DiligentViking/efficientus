@@ -309,27 +309,40 @@ main {
   font-size: 0.75rem;
 }
 
-.priority {
-  /* background-color: rgb(0, 0, 0, 0.15); */
+/* First half of bottom row */
+.priority,
+.datetimedue {
   color: rgb(185, 115, 55);
   /* color: rgb(216, 68, 9); */
   border-radius: 0.5rem;
-  padding: 0.25rem 0.5rem;
-  transform: translate(-0.5rem);
+  padding: 0.25rem;
+  transform: translate(-0.25rem);
   display: flex;
   transition: background-color 0.25s ease, color 0.25s ease;
 }
 
-.priority > svg {
+.priority > svg,
+.datetimedue > svg {
   color: rgb(185, 115, 55);
   /* color: rgb(216, 68, 9); */
   width: 0.875rem;
   height: 0.875rem;
-  transform: translate(0, 0.0625rem);
   margin-right: 0.125rem;
 }
 
-.priority:hover {
+.priority:hover,
+.datetimedue:hover {
   background-color: rgb(0, 0, 0, 0.10);
   cursor: pointer;
 }
+
+.priority {
+  margin-right: 0.0625rem;
+}
+
+.priority > svg {
+  transform: translate(0, 0.0625rem);
+}
+/* ----- */
+
+/* Second half of bottom row */
