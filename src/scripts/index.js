@@ -18,31 +18,25 @@ console.log(`
 
 createList('Today');
 createList('Odin Project');
+createList('Appointments');
 
-createTodo(['today'], 'Feed all of the scats', '2025', 5);
-createTodo(['today'], 'Pickleball with S at the park', '2025', 3);
-createTodo(['today', 'odin project'], 'Finish v1.0 of Todo app', '2025', 7);
-createTodo(['odin project'], 'Do "Linting" lesson', '', 1);
+createTodo(['Today'], 'Feed cats', 'Check if Shunty\'s bed is waterproof, while you\'re at it.', null, 2);
+createTodo(['Today', 'Odin Project'], 'Finish v1.0 of Todo app', 'Be efficient', null, 3);
+createTodo(['Today'], 'Pickleball with S at the park', '', null, 2);
+createTodo(['Today'], 'Buy pumpkin seeds', 'Make sure to not get the kernel-only stuff', null, 1);
+createTodo(['Today', 'Appointments'], 'Get D\'s birthday present', '', null, 2);
+createTodo(['Today'], 'Research how to increase reading speed', '', null, 3);
+createTodo(['Appointments'], 'Discuss the thing with D', 'On the phone, if not at the place', null, 2);
+createTodo(['Odin Project'], 'Check out other solutions', 'TOP guide article says it\'s essential', null, 2);
+createTodo(['Odin Project'], 'Do "Linting" lesson', '', null, 1);
 
 
 console.table(readAllTodos());
 
 
-/* Helper Function */
+/* Some Globals */
 
-function appendSingleElem(parentNode, elem, text=null, attributes={}) {  // Use this for all elems that don't have child elems in them
-  const vars = {};
-
-  vars[elem] = document.createElement(elem);
-  
-  vars[elem].textContent = text;
-
-  Object.keys(attributes).forEach((attr) => {
-    vars[elem].setAttribute(attr, attributes[attr]);
-  });
-
-  parentNode.appendChild(vars[elem]);
-}
+// const currentPlace = 'Today';
 
 
 /* Sidebar */
@@ -86,4 +80,12 @@ document.querySelector('.sidebar-item.today').click();
 
 /* Main */
 
-// Lists //
+const contentArea = document.querySelector('.content');
+
+function displayTodos(list) {
+  const todos = readAllTodos(list);
+
+  for (const todo of todos) {
+
+  }
+}
