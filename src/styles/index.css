@@ -174,7 +174,6 @@ main {
 /* Task Scroll */
 
 .task-scroll {
-  display: none;
   overflow-y: clip;
   width: 10.5rem;
   position: absolute;
@@ -271,23 +270,6 @@ main {
   /* align-items: center; */
 }
 
-.check-icon {
-  position: relative;
-}
-
-.check-icon > span {
-  -webkit-mask: url('../assets/images/check-svgrepo-com.svg') no-repeat center / contain;
-  mask: url('../assets/images/check-svgrepo-com.svg') no-repeat center / contain;
-  background-color: currentColor;
-  color: rgb(95, 120, 55);
-  /* color: rgb(80, 50, 25, 0.75); */
-  /* color: black; */
-  width: 3rem;
-  height: 3rem;
-  position: absolute;
-  transform: translate(-0.5625rem, -0.5rem);
-}
-
 .checkbox {
   appearance: none;
   background: none;
@@ -297,6 +279,31 @@ main {
   width: 1.75rem;
   margin-top: 0.125rem;
   margin-right: 0.75rem;
+}
+
+.checkbox::before {
+  -webkit-mask: url('../assets/images/sun.svg') no-repeat center / contain;
+  mask: url('../assets/images/sun.svg') no-repeat center / contain;
+  background-color: currentColor;
+  color: rgb(0, 0, 0);
+  /* color: rgb(95, 120, 55); */
+  content: '';
+  width: 1.25rem;
+  height: 1.25rem;
+  position: absolute;
+  transform: translate(0.125rem, 0.125rem);
+}
+
+.checkbox::after {
+  -webkit-mask: url('../assets/images/check-svgrepo-com.svg') no-repeat center / contain;
+  mask: url('../assets/images/check-svgrepo-com.svg') no-repeat center / contain;
+  background-color: currentColor;
+  color: rgb(95, 120, 55);
+  content: '';
+  width: 3rem;
+  height: 3rem;
+  position: absolute;
+  transform: translate(-0.6875rem, -0.75rem);
 }
 
 .row-group {
@@ -377,8 +384,3 @@ main {
   height: 100%;
 }
 /* ----- */
-
-
-/* Custom Lists [special] */
-
-
