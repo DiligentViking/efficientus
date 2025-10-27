@@ -262,12 +262,19 @@ main {
 .todo {
   border: 1px solid rgb(80, 50, 25, 0.5);
   border-radius: 1rem;
+  box-shadow: 2px 2px 4px rgb(0, 0, 0, 0.2);
   padding: 0.75rem;
   padding-bottom: 0.5rem;
   max-width: 700px;
+  margin-bottom: 1rem;
   transform: translate(-0.75rem);
   display: flex;
   /* align-items: center; */
+  transition: border 0.25s ease;
+}
+
+.todo:hover {
+  border: 1px solid rgb(80, 50, 25, 1);
 }
 
 .checkbox {
@@ -275,10 +282,16 @@ main {
   background: none;
   border: 2px solid rgb(80, 50, 25, 0.75);
   border-radius: 0.5rem;
+  /* filter: drop-shadow(1px 1px 2px rgb(0, 0, 0, 0.2)); */
   height: 1.75rem;
   width: 1.75rem;
   margin-top: 0.125rem;
   margin-right: 0.75rem;
+}
+
+.checkbox::before,
+.checkbox::after {
+  display: none;
 }
 
 .checkbox::before {
@@ -352,6 +365,7 @@ main {
 }
 
 .priority {
+  width: 4.020625rem;  /* the width of their largest state */
   margin-right: 0.0625rem;
 }
 
@@ -367,6 +381,7 @@ main {
 }
 
 .datetimedue {
+  width: 4.34375rem;
   margin-right: 1rem;
 }
 
