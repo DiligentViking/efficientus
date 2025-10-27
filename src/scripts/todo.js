@@ -1,10 +1,10 @@
 import { getTodos, setTodos } from './storage.js';
 
 
-const createTodo = (lists, desc, notes, datetimedue, priority, todos=getTodos()) => {
+const createTodo = (lists, description, notes, datetimedue, priority, todos=getTodos()) => {
   const todoData = {
     lists,
-    desc,
+    description,
     notes,
     priority,
     datetimedue,
