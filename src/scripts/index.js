@@ -88,6 +88,7 @@ function displayTodos(list) {
   for (const todoData of todoArray) {
     const todoElem = document.createElement('div');
     todoElem.classList.add('todo');
+    todoElem.setAttribute('data-todoID', todoData.todoID);
 
     const checkbox = document.createElement('input');
     checkbox.classList.add('checkbox');
@@ -153,7 +154,6 @@ function displayTodos(list) {
 
     rowGroup2.appendChild(datetimedue);
 
-    console.log(todoData.lists.length);
     if (todoData.lists.length == 2) {
       const linkedList = document.createElement('button');
       linkedList.classList.add('linked-list');

@@ -20,9 +20,11 @@ const readAllTodos = (list, todos=getTodos()) => {
   const matchingTodos = [];
 
   console.log(`Todos for "${list}":`);
-  for (const todoData of todos) {
-    if (!list || todoData.lists.includes(list) && (!todoData.lists.includes('trash') || list == 'trash')) {
-      matchingTodos.push(todoData);
+  for (let x = 0; x < todos.length; x++) {
+    if (!list || todos[x].lists.includes(list) && (!todos[x].lists.includes('trash') || list == 'trash')) {
+      todos[x]['todoID'] = x;
+      
+      matchingTodos.push(todos[x]);
     }
   }
 
