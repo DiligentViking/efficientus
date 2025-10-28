@@ -57,7 +57,18 @@ body {
   background-color: rgb(0, 0, 0, 0.15);
   padding: 1rem;
   width: 13.875rem;
+  height: 100%;
+  position: absolute;
+  z-index: 1;
+  transition: opacity 0.5s ease;
 }
+
+/* Sidebar transition effect */
+.sidebar-placeholder {
+  width: 13.875rem;
+  transition: width 0.5s ease;
+}
+/* ----- */
 
 .logo {
   font-family: 'ubuntu-medium';
@@ -158,12 +169,19 @@ body {
 /* Content Area */
 
 main {
+  overflow: clip;
   flex: 1;
+  position: relative;
 }
 
 .content {
-  margin: 10vh 20%;
+  margin: auto;
+  margin-top: 5.625rem;
+  max-width: 63.125rem;
   position: relative;
+  right: 0;
+  transition: max-width 0.5s ease/* , right 1s ease, transform 1s ease */;
+  will-change: max-width;
 }
 
 .content-title {
@@ -179,6 +197,8 @@ main {
   position: absolute;
   top: 0;
   right: 0;
+  z-index: 1;
+  transition: top 0.5s ease, transform 0.5s ease;
 }
 
 /* Scroll decor */
@@ -214,7 +234,7 @@ main {
   transform: translate(0.625rem, 0.1875rem);
 }
 
-.scroll-decor-container:active + .scroll-content {
+.scroll-decor-container:hover + .scroll-content {
   translate: 0 -110%;
 }
 /* ----- */
@@ -265,12 +285,13 @@ main {
   box-shadow: 2px 2px 4px rgb(0, 0, 0, 0.2);
   padding: 0.75rem;
   padding-bottom: 0.5rem;
-  max-width: 700px;
+  max-width: 43.75rem;
   margin-bottom: 1rem;
   transform: translate(-0.75rem);
   display: flex;
   /* align-items: center; */
-  transition: border 0.25s ease;
+  transition: border 0.25s ease, max-width 0.5s ease;
+  will-change: max-width;
 }
 
 .todo:hover {
@@ -399,3 +420,53 @@ main {
   height: 100%;
 }
 /* ----- */
+
+
+/* Responsive Design */
+
+@media screen and (max-width: 1280px) {
+  .content {
+    max-width: 47rem;
+  }
+
+  .todo {
+    max-width: 31.25rem;
+  }
+}
+
+@media screen and (max-width: 1054px) {
+  .content {
+    margin-left: 2.53125rem;
+    margin-right: calc(2.53125rem - 0.75rem);
+  }
+
+  .todo {
+    width: calc(100% + 0.75rem);
+    max-width: calc(100% + 0.75rem);
+  }
+  
+  .task-scroll {
+    top: -4.75rem;
+    transform: scale(0.75);
+    transform-origin: top right;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .sidebar {
+    height: 100%;
+    opacity: 0;
+    position: absolute;
+    animation: none;
+  }
+
+  .sidebar-placeholder {
+    position: static;
+    width: 0;
+    animation: none;
+  }
+
+  .content {
+    max-width: 100%;
+  }
+}
