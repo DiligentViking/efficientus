@@ -26,7 +26,7 @@ createTodo(['Today'], 'Pickleball with S at the park', '', null, 2);
 createTodo(['Today'], 'Buy pumpkin seeds', 'Make sure not to get the kernel-only stuff', null, 1);
 createTodo(['Today', 'Appointments'], 'Get D\'s birthday present', '', null, 2);
 createTodo(['Today'], 'Research how to increase reading speed', '', null, 3);
-createTodo(['Appointments'], 'Discuss the thing with D', 'On the phone, if not at the place', null, 2);
+createTodo(['Appointments'], 'Discuss the thing with E', 'On the phone, if not at the place', null, 2);
 createTodo(['Odin Project'], 'Check out other solutions', 'TOP guide article says it\'s essential', null, 2);
 createTodo(['Odin Project'], 'Do "Linting" lesson', '', null, 1);
 
@@ -34,18 +34,20 @@ createTodo(['Odin Project'], 'Do "Linting" lesson', '', null, 1);
 console.table(readAllTodos());
 
 
-/* Some Globals */
+/* Globals */
 
 // const currentPlace = 'Today';
+
+const sidebarMenu = document.querySelector('.sidebar-menu');
+const sidebarGroupLists = document.querySelector('.sidebar-group.lists');
+const listsArray = readLists();
+
+const contentArea = document.querySelector('.content');
 
 
 /* Sidebar */
 
 // List loading //
-
-const sidebarGroupLists = document.querySelector('.sidebar-group.lists');
-
-const listsArray = readLists();
 
 for (const list of listsArray) {
   if (list == 'Today') continue;
@@ -64,25 +66,42 @@ for (const list of listsArray) {
 
 // Sidebar-item selection functionality //
 
-const sidebarMenu = document.querySelector('.sidebar-menu');
-
 sidebarMenu.addEventListener('click', (e) => {
   const dataList = e.target.dataset.list;
+
   if (dataList) {
     const prevSelected = sidebarMenu.querySelector('.selected');
     if (prevSelected) prevSelected.classList.remove('selected');
     e.target.classList.add('selected');
+
+    renderTodoListDOM(dataList);
   }
 });
 
-document.querySelector('.sidebar-item.today').click();
+sidebarMenu.querySelector('.sidebar-item.today').click();
 
 
 /* Main */
 
-const contentArea = document.querySelector('.content');
+function renderTodoListDOM(list) {
+  // Clearing with fade effect //
+  contentArea.textContent = '';
+  ;
 
-function displayTodos(list) {
+  // Title //
+  const contentTitle = document.createElement('h1');
+  contentTitle.textContent = list;
+  contentTitle.classList.add('content-title');
+
+  contentArea.appendChild(contentTitle);
+
+  // Progress-scroll //
+  ;
+
+  // Todos //
+  const todoWrapper = document.createElement('div');
+  todoWrapper.classList.add('.todo-wrapper');
+
   const todoArray = readAllTodos(list);
 
   for (const todoData of todoArray) {
@@ -169,8 +188,10 @@ function displayTodos(list) {
 
     todoElem.appendChild(stackGroup);
 
-    contentArea.appendChild(todoElem);
+    todoWrapper.appendChild(todoElem);
   }
+
+  contentArea.appendChild(todoWrapper);
 }
 
-displayTodos('Today');
+renderTodoListDOM('Today');
