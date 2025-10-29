@@ -20,7 +20,7 @@ createList('Today');
 createList('Odin Project');
 createList('Appointments');
 
-createTodo(['Today'], 'Feed cats', 'Check if Shunty\'s bed is waterproof, while you\'re at it.', null, 2);
+createTodo(['Today'], 'Feed cats', 'Check if Shunty\'s bed is waterproof, while you\'re at it. The quick brown fox jumps over the lazy dog. Five frantic fat frogs.', null, 2);
 createTodo(['Today', 'Odin Project'], 'Finish v1.0 of Todo app', 'Be efficient', null, 3);
 createTodo(['Today'], 'Pickleball with S at the park', '', null, 2);
 createTodo(['Today'], 'Buy pumpkin seeds', 'Make sure not to get the kernel-only stuff', null, 1);
@@ -100,7 +100,7 @@ function displayTodos(list) {
     stackGroup.classList.add('stack-group');
 
     const rowGroup1 = document.createElement('div');
-    rowGroup1.classList.add('row-group');
+    rowGroup1.classList.add('row-group', 'one');
 
     const description = document.createElement('p');
     description.classList.add('description');
@@ -115,7 +115,7 @@ function displayTodos(list) {
     stackGroup.appendChild(rowGroup1);
 
     const rowGroup2 = document.createElement('div');
-    rowGroup2.classList.add('row-group');
+    rowGroup2.classList.add('row-group', 'two');
 
     const priority = document.createElement('button');
     priority.classList.add('priority');
