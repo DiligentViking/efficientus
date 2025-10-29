@@ -43,7 +43,11 @@ const sidebarGroupLists = document.querySelector('.sidebar-group.lists');
 const listsArray = readLists();
 
 const contentArea = document.querySelector('.content');
+const contentTitle = contentArea.querySelector('.content-title');
+const progressScroll = contentArea.querySelector('.task-scroll');
+const todoWrapper = contentArea.querySelector('.todo-wrapper');
 
+let appLoad = true;
 
 /* Sidebar */
 
@@ -74,7 +78,21 @@ sidebarMenu.addEventListener('click', (e) => {
     if (prevSelected) prevSelected.classList.remove('selected');
     e.target.classList.add('selected');
 
-    renderTodoListDOM(dataList);
+    // Effects and Rendering //
+    if (appLoad) {
+      appLoad = false;
+      renderTodoListDOM(dataList);
+      return;
+    }
+
+    contentTitle.classList.add('no-opacity');
+    todoWrapper.classList.add('no-opacity');
+
+    setTimeout(() => {
+      renderTodoListDOM(dataList);
+      contentTitle.classList.remove('no-opacity');
+      todoWrapper.classList.remove('no-opacity');
+    }, 0.25 * 1000);
   }
 });
 
@@ -84,23 +102,26 @@ sidebarMenu.querySelector('.sidebar-item.today').click();
 /* Main */
 
 function renderTodoListDOM(list) {
-  // Clearing with fade effect //
-  contentArea.textContent = '';
-  ;
-
   // Title //
-  const contentTitle = document.createElement('h1');
   contentTitle.textContent = list;
-  contentTitle.classList.add('content-title');
-
-  contentArea.appendChild(contentTitle);
 
   // Progress-scroll //
-  ;
+  const numDone = progressScroll.querySelector('.num-done');
+  const numTotal = progressScroll.querySelector('.num-total');
+  const progressBar = progressScroll.querySelector('.progress-bar');
+
+  numDone.classList.add('crossfade');
+  numTotal.classList.add('crossfade');
+  progressBar.classList.add('crossfade');
+
+  setTimeout(() => {
+    numDone.classList.remove('crossfade');
+    numTotal.classList.remove('crossfade');
+    progressBar.classList.remove('crossfade');
+  }, 1 * 1000);
 
   // Todos //
-  const todoWrapper = document.createElement('div');
-  todoWrapper.classList.add('.todo-wrapper');
+  todoWrapper.textContent = '';
 
   const todoArray = readAllTodos(list);
 
@@ -190,8 +211,6 @@ function renderTodoListDOM(list) {
 
     todoWrapper.appendChild(todoElem);
   }
-
-  contentArea.appendChild(todoWrapper);
 }
 
 renderTodoListDOM('Today');

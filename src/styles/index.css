@@ -188,6 +188,14 @@ main {
   margin-bottom: 2rem;
 }
 
+.content-title,
+.todo-wrapper {
+  transition: opacity 0.25s ease;
+}
+.no-opacity {
+  opacity: 0;
+}
+
 
 /* Task Scroll */
 
@@ -234,7 +242,7 @@ main {
   transform: translate(0.625rem, 0.1875rem);
 }
 
-.scroll-decor-container:hover + .scroll-content {
+.task-scroll.rollup > .scroll-content {
   translate: 0 -110%;
 }
 /* ----- */
@@ -267,14 +275,73 @@ main {
   font-weight: 700;
   border-radius: 0.25rem;
   padding: 0.25rem;
-  margin: 0 5px;
+  margin: 0 0.3125rem;
   transition: background-color 0.5s;
 }
 
 .progress-bar:hover {
-  background-color: rgb(120, 135, 95, 0.7);
   cursor: default;
 }
+
+/* Crossfade effect (hacky but it does work) */
+.num-done,
+.num-total,
+.progress-bar {
+  position: relative;
+}
+
+.num-done:hover,
+.num-total:hover,
+.progress-bar:hover {
+  cursor: default;
+}
+
+.num-done::before,
+.num-total::before,
+.progress-bar::before {
+  content: '';
+  outline: 1px dashed rgb(0, 0, 255, 1);
+  background-color: rgb(225, 175, 95);
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+  opacity: 0;
+}
+
+.num-done > span,
+.num-total > span,
+.progress-bar > span {
+  outline: 1px dashed rgb(255, 0, 0, 0.75);
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 2;
+  opacity: 0;
+  visibility: hidden;
+  /* transition: opacity 1.25s ease, visibility 1.25s ease; */
+}
+
+.num-done.crossfade::before,
+.num-total.crossfade::before,
+.progress-bar.crossfade::before,
+.num-done.crossfade > span,
+.num-total.crossfade > span,
+.progress-bar.crossfade > span {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 1s ease, visibility 1s ease;
+}
+
+.progress-bar > span {
+  background-color: inherit;
+  border-radius: inherit;
+  padding: inherit;
+}
+/* ----- */
 
 
 /* Todos */
@@ -367,6 +434,10 @@ main {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.row-group.one:hover {
+  cursor: default;
 }
 
 /* Bottom row */
