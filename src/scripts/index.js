@@ -20,15 +20,15 @@ createList('Today');
 createList('Odin Project');
 createList('Appointments');
 
-createTodo(['Today'], 'Feed cats', 'Check if Shunty\'s bed is waterproof, while you\'re at it. The quick brown fox jumps over the lazy dog. Five frantic fat frogs.', null, 2);
-createTodo(['Today', 'Odin Project'], 'Finish v1.0 of Todo app', 'Be efficient', null, 3);
-createTodo(['Today'], 'Pickleball with S at the park', '', null, 2);
-createTodo(['Today'], 'Buy pumpkin seeds', 'Make sure not to get the kernel-only stuff', null, 1);
-createTodo(['Today', 'Appointments'], 'Get D\'s birthday present', '', null, 2);
-createTodo(['Today'], 'Research how to increase reading speed', '', null, 3);
-createTodo(['Appointments'], 'Discuss the thing with E', 'On the phone, if not at the place', null, 2);
-createTodo(['Odin Project'], 'Check out other solutions', 'TOP guide article says it\'s essential', null, 2);
-createTodo(['Odin Project'], 'Do "Linting" lesson', '', null, 1);
+createTodo({inToday: true}, 'Check if Shunty\'s bed is waterproof, while you\'re at it. The quick brown fox jumps over the lazy dog. Five frantic fat frogs.', null, 2);
+createTodo({inToday: true, customList: 'Odin Project'}, 'Finish v1.0 of Todo app', 'Be efficient', null, 3);
+createTodo({inToday: true}, 'Pickleball with S at the park', '', null, 2);
+createTodo({inToday: true}, 'Buy pumpkin seeds', 'Make sure not to get the kernel-only stuff', null, 1);
+createTodo({inToday: true, customList: 'Appointments'}, 'Get D\'s birthday present', '', null, 2);
+createTodo({inToday: true}, 'Research how to increase reading speed', '', null, 3);
+createTodo({customList: 'Appointments'}, 'Discuss the thing with E', 'On the phone, if not at the place', null, 2);
+createTodo({customList: 'Odin Project'}, 'Check out other solutions', 'TOP guide article says it\'s essential', null, 2);
+createTodo({customList: 'Odin Project'}, 'Do "Linting" lesson', '', null, 1);
 
 
 console.table(readAllTodos());
@@ -223,6 +223,7 @@ renderTodoListDOM('Today');
 todoWrapper.addEventListener('click', (e) => {
   console.log('selected item\'s class: ' + e.target.classList[0]);
   switch (e.target.classList[0]) {
+    // Checkbox //
     case 'checkbox':
       if (currentPlace !== 'Today') {
         const secondClass = e.target.classList[1];

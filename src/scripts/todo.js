@@ -1,9 +1,9 @@
 import { getTodos, setTodos } from './storage.js';
 
 
-const createTodo = (lists, description, notes, datetimedue, priority, isDone=null, todos=getTodos()) => {
+const createTodo = (membership={inToday, customList, template, inTrash}, description, notes, datetimedue, priority, isDone=null, todos=getTodos()) => {
   const todoData = {
-    lists,
+    membership,
     description,
     notes,
     datetimedue,
@@ -22,9 +22,9 @@ const readAllTodos = (list, todos=getTodos()) => {
 
   console.log(`Todos for "${list}":`);
   for (let x = 0; x < todos.length; x++) {
-    if (!list || todos[x].lists.includes(list) && (!todos[x].lists.includes('trash') || list == 'trash')) {
+    if (!list || (list === 'Today' && todos[x].membership.inToday) && ) {
       todos[x]['todoID'] = x;
-      
+
       matchingTodos.push(todos[x]);
     }
   }
