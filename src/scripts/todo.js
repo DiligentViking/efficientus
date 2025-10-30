@@ -33,11 +33,14 @@ const readAllTodos = (list, todos=getTodos()) => {
 }
 
 
-const updateTodo = (todoId, prop, val, todos=getTodos()) => {
+const updateTodo = (todoId, prop, val, todos=getTodos()) => {  // This should not really be used because it doesn't have a crisp purpose
   todos[todoId][prop] = val;
 
   setTodos(todos);
 }
+
+
+
 
 
 const deleteTodo = (todoId, trash=true, todos=getTodos()) => {

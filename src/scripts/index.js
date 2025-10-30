@@ -101,7 +101,7 @@ sidebarMenu.addEventListener('click', (e) => {
 sidebarMenu.querySelector('.sidebar-item.today').click();
 
 
-/* Main */
+/* Todo Rendering */
 
 function renderTodoListDOM(list) {
   // Title //
@@ -224,22 +224,40 @@ todoWrapper.addEventListener('click', (e) => {
   console.log('selected item\'s class: ' + e.target.classList[0]);
   switch (e.target.classList[0]) {
     case 'checkbox':
+      if (currentPlace !== 'Today') {
+        const secondClass = e.target.classList[1];
+        let isDone;
+
+        switch (secondClass) {
+          case undefined:
+            ;
+            break;
+          case 'doing':
+            ;
+            break;
+        }
+
+        e.target.classList.toggle('doing');
+
+        break;
+      }
+
       const secondClass = e.target.classList[1];
-      let updatedVal;
+      let isDone;
 
       switch (secondClass) {
         case undefined:
-          updatedVal = 1;
+          isDone = 1;
           break;
         case 'done':
-          updatedVal = 0;
+          isDone = 0;
           break;
       }
 
       e.target.classList.toggle('done');
+
       const todoID = e.target.parentNode.dataset.todoid;
-      
-      updateTodo(todoID, 'isDone', updatedVal);
+      updateTodo(todoID, 'isDone', isDone);
 
       break;
   }
