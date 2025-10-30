@@ -415,6 +415,10 @@ main {
   opacity: 1;
 }
 
+.checkbox.doing::before {
+  opacity: 1;
+}
+
 .checkbox:hover {
   cursor: pointer;
   border: 2px solid rgb(80, 50, 25, 1);

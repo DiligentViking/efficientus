@@ -39,8 +39,29 @@ const updateTodo = (todoId, prop, val, todos=getTodos()) => {  // This should no
   setTodos(todos);
 }
 
+const markTodoAsDone = (todoID) => {
+  updateTodo(todoID, 'isDone', 1);
+}
 
+const markTodoAsNotDone = (todoID) => {
+  updateTodo(todoID, 'isDone', 0);
+}
 
+const linkTodoToToday = (todoID, todos=getTodos()) => {
+  if (todos[todoID].lists[0] !== 'Today') {
+    todos[todoID].lists.unshift('Today');
+  }
+
+  setTodos(todos);
+}
+
+const unlinkTodoFromToday = (todoID, todos=getTodos()) => {
+  if (todos[todoID].lists[0] === 'Today') {
+    todos[todoID].lists.shift();
+  }
+
+  setTodos(todos);
+}
 
 
 const deleteTodo = (todoId, trash=true, todos=getTodos()) => {
@@ -52,4 +73,4 @@ const deleteTodo = (todoId, trash=true, todos=getTodos()) => {
 }
 
 
-export { createTodo, readAllTodos, updateTodo, deleteTodo };
+export { createTodo, readAllTodos, markTodoAsDone, markTodoAsNotDone, linkTodoToToday, unlinkTodoFromToday, deleteTodo };

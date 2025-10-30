@@ -2,7 +2,7 @@ import '../styles/index.css';
 import scrollImg from '../assets/images/scroll-outline.svg';
 
 import { createProfile, createList, readLists } from './storage.js';
-import { createTodo, readAllTodos, updateTodo, deleteTodo } from './todo.js';
+import { createTodo, readAllTodos, markTodoAsDone, markTodoAsNotDone, linkTodoToToday, unlinkTodoFromToday, deleteTodo } from './todo.js';
 
 
 /* Initial Population */
@@ -24,9 +24,9 @@ createTodo(['Today'], 'Feed cats', 'Check if Shunty\'s bed is waterproof, while 
 createTodo(['Today', 'Odin Project'], 'Finish v1.0 of Todo app', 'Be efficient', null, 3);
 createTodo(['Today'], 'Pickleball with S at the park', '', null, 2);
 createTodo(['Today'], 'Buy pumpkin seeds', 'Make sure not to get the kernel-only stuff', null, 1);
+createTodo(['Appointments'], 'Discuss the thing with E', 'On the phone, if not at the place', null, 2);
 createTodo(['Today', 'Appointments'], 'Get D\'s birthday present', '', null, 2);
 createTodo(['Today'], 'Research how to increase reading speed', '', null, 3);
-createTodo(['Appointments'], 'Discuss the thing with E', 'On the phone, if not at the place', null, 2);
 createTodo(['Odin Project'], 'Check out other solutions', 'TOP guide article says it\'s essential', null, 2);
 createTodo(['Odin Project'], 'Do "Linting" lesson', '', null, 1);
 
@@ -135,6 +135,11 @@ function renderTodoListDOM(list) {
     const checkbox = document.createElement('input');
     checkbox.classList.add('checkbox');
     checkbox.setAttribute('type', 'checkbox');
+    if (todoData.isDone === 1) {
+      checkbox.classList.add('done');
+    } else if (list !== 'Today' && todoData.lists.length == 2) {  // A lil non-SRP. Also, I'll have to change this when I have templates in addition to custom lists.
+      checkbox.classList.add('doing');
+    }
 
     todoElem.appendChild(checkbox);
 
@@ -196,7 +201,7 @@ function renderTodoListDOM(list) {
 
     rowGroup2.appendChild(datetimedue);
 
-    if (todoData.lists.length == 2) {
+    if (list === 'Today' && todoData.lists.length == 2) {
       const linkedList = document.createElement('button');
       linkedList.classList.add('linked-list');
       linkedList.title = 'source: ' + todoData.lists[1];
@@ -224,40 +229,39 @@ todoWrapper.addEventListener('click', (e) => {
   console.log('selected item\'s class: ' + e.target.classList[0]);
   switch (e.target.classList[0]) {
     case 'checkbox':
+      const secondClass = e.target.classList[1];
+      const todoID = e.target.parentNode.dataset.todoid;
+
       if (currentPlace !== 'Today') {
-        const secondClass = e.target.classList[1];
-        let isDone;
+        switch (secondClass) {
+          case undefined:
+            e.target.classList.add('doing');
+
+            linkTodoToToday(todoID);
+            break;
+          case 'doing':
+            e.target.classList.remove('doing');
+
+            unlinkTodoFromToday(todoID);
+            break;
+          case 'done':
+            alert('Todos are checked/unchecked in Today!')
+            break;
+        }
+      } else {
+        e.target.classList.toggle('done');
 
         switch (secondClass) {
           case undefined:
-            ;
+
+            markTodoAsDone(todoID);
             break;
-          case 'doing':
-            ;
+          case 'done':
+
+            markTodoAsNotDone(todoID);
             break;
         }
-
-        e.target.classList.toggle('doing');
-
-        break;
       }
-
-      const secondClass = e.target.classList[1];
-      let isDone;
-
-      switch (secondClass) {
-        case undefined:
-          isDone = 1;
-          break;
-        case 'done':
-          isDone = 0;
-          break;
-      }
-
-      e.target.classList.toggle('done');
-
-      const todoID = e.target.parentNode.dataset.todoid;
-      updateTodo(todoID, 'isDone', isDone);
 
       break;
   }
