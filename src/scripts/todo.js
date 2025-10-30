@@ -1,13 +1,14 @@
 import { getTodos, setTodos } from './storage.js';
 
 
-const createTodo = (lists, description, notes, datetimedue, priority, todos=getTodos()) => {
+const createTodo = (lists, description, notes, datetimedue, priority, isDone=null, todos=getTodos()) => {
   const todoData = {
     lists,
     description,
     notes,
-    priority,
     datetimedue,
+    priority,
+    isDone,
   };
 
   todos.push(todoData);

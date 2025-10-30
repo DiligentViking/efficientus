@@ -54,7 +54,7 @@ let appLoad = true;
 // List loading //
 
 for (const list of listsArray) {
-  if (list == 'Today') continue;
+  if (list === 'Today') continue;
   const sidebarItem = document.createElement('li');
 
   sidebarItem.setAttribute('class', 'sidebar-item');
@@ -68,7 +68,7 @@ for (const list of listsArray) {
   sidebarGroupLists.appendChild(sidebarItem);
 }
 
-// Sidebar-item selection functionality //
+// Sidebar-item Selection //
 
 sidebarMenu.addEventListener('click', (e) => {
   const dataList = e.target.dataset.list;
@@ -214,3 +214,31 @@ function renderTodoListDOM(list) {
 }
 
 renderTodoListDOM('Today');
+
+
+/* Todo Selection */
+
+todoWrapper.addEventListener('click', (e) => {
+  console.log('selected item\'s class: ' + e.target.classList[0]);
+  switch (e.target.classList[0]) {
+    case 'checkbox':
+      const secondClass = e.target.classList[1];
+      let updatedVal;
+
+      switch (secondClass) {
+        case undefined:
+          updatedVal = 1;
+          break;
+        case 'done':
+          updatedVal = 0;
+          break;
+      }
+
+      e.target.classList.toggle('done');
+      const todoID = e.target.parentNode.dataset.todoid;
+      
+      updateTodo(todoID, 'isDone', updatedVal);
+
+      break;
+  }
+});

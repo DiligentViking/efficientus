@@ -376,11 +376,14 @@ main {
   flex-shrink: 0;
   margin-top: 0.125rem;
   margin-right: 0.75rem;
+  transition: border 0.25s ease;
 }
 
 .checkbox::before,
 .checkbox::after {
-  display: none;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.25s ease;
 }
 
 .checkbox::before {
@@ -407,6 +410,19 @@ main {
   position: absolute;
   transform: translate(-0.6875rem, -0.75rem);
 }
+
+.checkbox.done::after {
+  opacity: 1;
+}
+
+.checkbox:hover {
+  cursor: pointer;
+  border: 2px solid rgb(80, 50, 25, 1);
+}
+
+/* .checkbox:not(.done):hover::after {
+  opacity: 0.3;
+} */
 
 .row-group {
   display: flex;
