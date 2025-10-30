@@ -36,7 +36,7 @@ console.table(readAllTodos());
 
 /* Globals */
 
-// const currentPlace = 'Today';
+let currentPlace;
 
 const sidebarMenu = document.querySelector('.sidebar-menu');
 const sidebarGroupLists = document.querySelector('.sidebar-group.lists');
@@ -73,7 +73,9 @@ for (const list of listsArray) {
 sidebarMenu.addEventListener('click', (e) => {
   const dataList = e.target.dataset.list;
 
-  if (dataList) {
+  if (dataList && dataList !== currentPlace) {
+    currentPlace = dataList;
+
     const prevSelected = sidebarMenu.querySelector('.selected');
     if (prevSelected) prevSelected.classList.remove('selected');
     e.target.classList.add('selected');
