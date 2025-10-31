@@ -19,7 +19,9 @@
 
 /* Base Styles */
 
-* {
+*,
+::before,
+::after {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -300,20 +302,22 @@ main {
 .num-total::before,
 .progress-bar::before {
   content: '';
-  outline: 1px dashed rgb(0, 0, 255, 1);
+  /* outline: 1px dashed rgb(0, 0, 255, 1); */
   background-color: rgb(225, 175, 95);
   height: 100%;
   width: 100%;
   position: absolute;
-  left: 0;
   top: 0;
+  left: 0;
   opacity: 0;
 }
 
-.num-done > span,
-.num-total > span,
-.progress-bar > span {
-  outline: 1px dashed rgb(255, 0, 0, 0.75);
+.num-done::after,
+.num-total::after,
+.progress-bar::after {
+  content: attr(data-content);
+  /* outline: 1px dashed rgb(255, 0, 0, 0.75); */
+  display: block;
   height: 100%;
   width: 100%;
   position: absolute;
@@ -322,21 +326,20 @@ main {
   z-index: 2;
   opacity: 0;
   visibility: hidden;
-  /* transition: opacity 1.25s ease, visibility 1.25s ease; */
 }
 
 .num-done.crossfade::before,
 .num-total.crossfade::before,
 .progress-bar.crossfade::before,
-.num-done.crossfade > span,
-.num-total.crossfade > span,
-.progress-bar.crossfade > span {
+.num-done.crossfade::after,
+.num-total.crossfade::after,
+.progress-bar.crossfade::after {
   opacity: 1;
   visibility: visible;
-  transition: opacity 1s ease, visibility 1s ease;
+  transition: opacity 0.5s ease-in-out;
 }
 
-.progress-bar > span {
+.progress-bar::after {
   background-color: inherit;
   border-radius: inherit;
   padding: inherit;

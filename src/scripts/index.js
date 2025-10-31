@@ -83,8 +83,8 @@ sidebarMenu.addEventListener('click', (e) => {
 
     // Effects and Rendering //
     if (appLoad) {
-      appLoad = false;
       renderTodoListDOM(dataList);
+      appLoad = false;
       return;
     }
 
@@ -108,20 +108,9 @@ function renderTodoListDOM(list) {
   // Title //
   contentTitle.textContent = list;
 
-  // Progress-scroll //
-  const numDone = progressScroll.querySelector('.num-done');
-  const numTotal = progressScroll.querySelector('.num-total');
-  const progressBar = progressScroll.querySelector('.progress-bar');
-
-  numDone.classList.add('crossfade');
-  numTotal.classList.add('crossfade');
-  progressBar.classList.add('crossfade');
-
-  setTimeout(() => {
-    numDone.classList.remove('crossfade');
-    numTotal.classList.remove('crossfade');
-    progressBar.classList.remove('crossfade');
-  }, 1 * 1000);
+  // Progress-scroll (1) //
+  let numDoneCount = 0;
+  let numTotalCount = 0;
 
   // Todos //
   todoWrapper.textContent = '';
@@ -138,6 +127,7 @@ function renderTodoListDOM(list) {
     checkbox.setAttribute('type', 'checkbox');
     if (todoData.isDone === 1) {
       checkbox.classList.add('done');
+      numDoneCount++;
     } else if (list !== 'Today' && todoData.lists.length == 2) {  // A lil non-SRP. Also, I'll have to change this when I have templates in addition to custom lists.
       checkbox.classList.add('doing');
     }
@@ -218,11 +208,46 @@ function renderTodoListDOM(list) {
     todoElem.appendChild(stackGroup);
 
     todoWrapper.appendChild(todoElem);
+
+    numTotalCount++;
+  }
+
+  // Progress-scroll (2) //
+  const numDone = progressScroll.querySelector('.num-done');
+  const numTotal = progressScroll.querySelector('.num-total');
+  const progressBar = progressScroll.querySelector('.progress-bar');
+
+  const hashtags = Math.round(numDoneCount / numTotalCount * 12);
+  const dots = 12 - hashtags;
+
+  if (appLoad) {
+    console.log('appload!'); 
+    numDone.textContent = numDoneCount;
+    numTotal.textContent = numTotalCount;
+    progressBar.textContent = '[' + '#'.repeat(hashtags) + '.'.repeat(dots) + ']';
+  } else {
+    numDone.dataset.content = numDoneCount;
+    numTotal.dataset.content = numTotalCount;
+    progressBar.dataset.content = '[' + '#'.repeat(hashtags) + '.'.repeat(dots) + ']';
+
+    
+    numDone.classList.add('crossfade');
+    numTotal.classList.add('crossfade');
+    progressBar.classList.add('crossfade');
+    
+    setTimeout(() => {
+      numDone.textContent = numDoneCount;
+      numTotal.textContent = numTotalCount;
+      progressBar.textContent = '[' + '#'.repeat(hashtags) + '.'.repeat(dots) + ']';
+
+      numDone.classList.remove('crossfade');
+      numTotal.classList.remove('crossfade');
+      progressBar.classList.remove('crossfade');
+    }, 0.5 * 1000);
+
+    console.log({numDoneCount, numTotalCount});
   }
 }
-
-renderTodoListDOM('Today');
-
 
 /* Todo Selection */
 
