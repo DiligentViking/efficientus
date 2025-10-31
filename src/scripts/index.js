@@ -9,17 +9,11 @@ import { createTodo, readAllTodos, markTodoAsDone, markTodoAsNotDone, linkTodoTo
 
 // localStorage.clear();  // Devving
 
-console.log(`
----------------
-~~Efficientus~~
----------------`
-+ '\n\n');
-
 if (!createProfile()) { 
   createList('Today');
   createList('Odin Project');
   createList('Appointments');
-
+  
   createTodo(['Today'], 'Feed cats', 'Check if Shunty\'s bed is waterproof, while you\'re at it. The quick brown fox jumps over the lazy dog. Five frantic fat frogs.', null, 2);
   createTodo(['Today', 'Odin Project'], 'Finish v1.0 of Todo app', 'Be efficient', null, 3);
   createTodo(['Today'], 'Pickleball with S at the park', '', null, 2);
@@ -31,6 +25,11 @@ if (!createProfile()) {
   createTodo(['Odin Project'], 'Do "Linting" lesson', '', null, 1);
 }
 
+console.log(`
+---------------
+~~Efficientus~~
+---------------`
++ '\n\n');
 
 console.table(readAllTodos());
 
