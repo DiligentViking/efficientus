@@ -7,8 +7,7 @@ import { createTodo, readAllTodos, markTodoAsDone, markTodoAsNotDone, linkTodoTo
 
 /* Initial Population */
 
-localStorage.clear();  // Devving
-createProfile();
+// localStorage.clear();  // Devving
 
 console.log(`
 ---------------
@@ -16,19 +15,21 @@ console.log(`
 ---------------`
 + '\n\n');
 
-createList('Today');
-createList('Odin Project');
-createList('Appointments');
+if (!createProfile()) { 
+  createList('Today');
+  createList('Odin Project');
+  createList('Appointments');
 
-createTodo(['Today'], 'Feed cats', 'Check if Shunty\'s bed is waterproof, while you\'re at it. The quick brown fox jumps over the lazy dog. Five frantic fat frogs.', null, 2);
-createTodo(['Today', 'Odin Project'], 'Finish v1.0 of Todo app', 'Be efficient', null, 3);
-createTodo(['Today'], 'Pickleball with S at the park', '', null, 2);
-createTodo(['Today'], 'Buy pumpkin seeds', 'Make sure not to get the kernel-only stuff', null, 1);
-createTodo(['Appointments'], 'Discuss the thing with E', 'On the phone, if not at the place', null, 2);
-createTodo(['Today', 'Appointments'], 'Get D\'s birthday present', '', null, 2);
-createTodo(['Today'], 'Research how to increase reading speed', '', null, 3);
-createTodo(['Odin Project'], 'Check out other solutions', 'TOP guide article says it\'s essential', null, 2);
-createTodo(['Odin Project'], 'Do "Linting" lesson', '', null, 1);
+  createTodo(['Today'], 'Feed cats', 'Check if Shunty\'s bed is waterproof, while you\'re at it. The quick brown fox jumps over the lazy dog. Five frantic fat frogs.', null, 2);
+  createTodo(['Today', 'Odin Project'], 'Finish v1.0 of Todo app', 'Be efficient', null, 3);
+  createTodo(['Today'], 'Pickleball with S at the park', '', null, 2);
+  createTodo(['Today'], 'Buy pumpkin seeds', 'Make sure not to get the kernel-only stuff', null, 1);
+  createTodo(['Appointments'], 'Discuss the thing with E', 'On the phone, if not at the place', null, 2);
+  createTodo(['Today', 'Appointments'], 'Get D\'s birthday present', '', null, 2);
+  createTodo(['Today'], 'Research how to increase reading speed', '', null, 3);
+  createTodo(['Odin Project'], 'Check out other solutions', 'TOP guide article says it\'s essential', null, 2);
+  createTodo(['Odin Project'], 'Do "Linting" lesson', '', null, 1);
+}
 
 
 console.table(readAllTodos());
@@ -48,6 +49,7 @@ const progressScroll = contentArea.querySelector('.task-scroll');
 const todoWrapper = contentArea.querySelector('.todo-wrapper');
 
 let appLoad = true;
+
 
 /* Sidebar */
 
@@ -236,12 +238,10 @@ todoWrapper.addEventListener('click', (e) => {
         switch (secondClass) {
           case undefined:
             e.target.classList.add('doing');
-
             linkTodoToToday(todoID);
             break;
           case 'doing':
             e.target.classList.remove('doing');
-
             unlinkTodoFromToday(todoID);
             break;
           case 'done':
@@ -253,11 +253,9 @@ todoWrapper.addEventListener('click', (e) => {
 
         switch (secondClass) {
           case undefined:
-
             markTodoAsDone(todoID);
             break;
           case 'done':
-
             markTodoAsNotDone(todoID);
             break;
         }

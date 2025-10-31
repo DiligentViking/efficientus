@@ -1,6 +1,6 @@
 const createProfile = () => {
   if (localStorage.length) {
-    return;
+    return 1;
   }
 
   localStorage.setItem('todos', '[]');
