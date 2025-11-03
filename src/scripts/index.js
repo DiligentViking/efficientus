@@ -44,7 +44,7 @@ const listsArray = readLists();
 
 const contentArea = document.querySelector('.content');
 const contentTitle = contentArea.querySelector('.content-title');
-const progressScroll = contentArea.querySelector('.task-scroll');
+const progressScroll = contentArea.querySelector('.progress-scroll');
 const todoWrapper = contentArea.querySelector('.todo-wrapper');
 
 let appLoad = true;
@@ -230,7 +230,6 @@ function renderTodoListDOM(list) {
     numTotal.dataset.content = numTotalCount;
     progressBar.dataset.content = '[' + '#'.repeat(hashtags) + '.'.repeat(dots) + ']';
 
-    
     numDone.classList.add('crossfade');
     numTotal.classList.add('crossfade');
     progressBar.classList.add('crossfade');
@@ -287,4 +286,12 @@ todoWrapper.addEventListener('click', (e) => {
 
       break;
   }
+});
+
+/* Other */
+
+// Progress-scroll Rollup Effect //
+
+progressScroll.querySelector('.scroll-decor-container').addEventListener('click' , () => {
+  progressScroll.classList.toggle('rollup');
 });

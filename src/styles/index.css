@@ -199,9 +199,9 @@ main {
 }
 
 
-/* Task Scroll */
+/* Progress Scroll */
 
-.task-scroll {
+.progress-scroll {
   overflow-y: clip;
   width: 10.5rem;
   position: absolute;
@@ -244,7 +244,7 @@ main {
   transform: translate(0.625rem, 0.1875rem);
 }
 
-.task-scroll.rollup > .scroll-content {
+.progress-scroll.rollup > .scroll-content {
   translate: 0 -110%;
 }
 /* ----- */
@@ -551,7 +551,7 @@ main {
     max-width: 100%;
   }
 
-  .task-scroll {
+  .progress-scroll {
     top: -4.75rem;
     transform: scale(0.75);
     transform-origin: top right;
