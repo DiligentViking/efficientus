@@ -111,6 +111,7 @@ function renderTodoListDOM(list) {
   // Progress-scroll (1) //
   let numDoneCount = 0;
   let numTotalCount = 0;
+  let numDoingCount = 0;
 
   // Todos //
   todoWrapper.textContent = '';
@@ -130,6 +131,7 @@ function renderTodoListDOM(list) {
       numDoneCount++;
     } else if (list !== 'Today' && todoData.lists.length == 2) {  // A lil non-SRP. Also, I'll have to change this when I have templates in addition to custom lists.
       checkbox.classList.add('doing');
+      numDoingCount++;
     }
 
     todoElem.appendChild(checkbox);
@@ -218,17 +220,20 @@ function renderTodoListDOM(list) {
   const progressBar = progressScroll.querySelector('.progress-bar');
 
   const hashtags = Math.round(numDoneCount / numTotalCount * 12);
-  const dots = 12 - hashtags;
+  const asterisks = Math.round(numDoingCount / numTotalCount * 12);
+  const dots = 12 - asterisks - hashtags;
+  // const dots = 12 - hashtags;
+  console.log({hashtags, asterisks, dots})
 
   if (appLoad) {
     console.log('appload!'); 
     numDone.textContent = numDoneCount;
     numTotal.textContent = numTotalCount;
-    progressBar.textContent = '[' + '#'.repeat(hashtags) + '.'.repeat(dots) + ']';
+    progressBar.textContent = '[' + '#'.repeat(hashtags) + ':'.repeat(asterisks) + '.'.repeat(dots) + ']';
   } else {
     numDone.dataset.content = numDoneCount;
     numTotal.dataset.content = numTotalCount;
-    progressBar.dataset.content = '[' + '#'.repeat(hashtags) + '.'.repeat(dots) + ']';
+    progressBar.dataset.content = '[' + '#'.repeat(hashtags) + ':'.repeat(asterisks) + '.'.repeat(dots) + ']';
 
     numDone.classList.add('crossfade');
     numTotal.classList.add('crossfade');
@@ -237,7 +242,7 @@ function renderTodoListDOM(list) {
     setTimeout(() => {
       numDone.textContent = numDoneCount;
       numTotal.textContent = numTotalCount;
-      progressBar.textContent = '[' + '#'.repeat(hashtags) + '.'.repeat(dots) + ']';
+      progressBar.textContent = '[' + '#'.repeat(hashtags) + ':'.repeat(asterisks) + '.'.repeat(dots) + ']';
 
       numDone.classList.remove('crossfade');
       numTotal.classList.remove('crossfade');
