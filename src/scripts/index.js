@@ -38,14 +38,19 @@ console.table(readAllTodos());
 
 let currentPlace;
 
+const listsArray = readLists();
+
 const sidebarMenu = document.querySelector('.sidebar-menu');
 const sidebarGroupLists = document.querySelector('.sidebar-group.lists');
-const listsArray = readLists();
 
 const contentArea = document.querySelector('.content');
 const contentTitle = contentArea.querySelector('.content-title');
 const progressScroll = contentArea.querySelector('.progress-scroll');
 const todoWrapper = contentArea.querySelector('.todo-wrapper');
+
+const numDone = progressScroll.querySelector('.num-done');
+const numTotal = progressScroll.querySelector('.num-total');
+const progressBar = progressScroll.querySelector('.progress-bar');
 
 let appLoad = true;
 
@@ -215,43 +220,14 @@ function renderTodoListDOM(list) {
   }
 
   // Progress-scroll (2) //
-  const numDone = progressScroll.querySelector('.num-done');
-  const numTotal = progressScroll.querySelector('.num-total');
-  const progressBar = progressScroll.querySelector('.progress-bar');
+  updateProgressScrollComponent(numDone, numDoneCount);
 
-  const hashtags = Math.round(numDoneCount / numTotalCount * 12);
-  const asterisks = Math.round(numDoingCount / numTotalCount * 12);
-  const dots = 12 - asterisks - hashtags;
-  // const dots = 12 - hashtags;
-  console.log({hashtags, asterisks, dots})
+  updateProgressScrollComponent(numTotal, numTotalCount);
 
-  if (appLoad) {
-    console.log('appload!'); 
-    numDone.textContent = numDoneCount;
-    numTotal.textContent = numTotalCount;
-    progressBar.textContent = '[' + '#'.repeat(hashtags) + ':'.repeat(asterisks) + '.'.repeat(dots) + ']';
-  } else {
-    numDone.dataset.content = numDoneCount;
-    numTotal.dataset.content = numTotalCount;
-    progressBar.dataset.content = '[' + '#'.repeat(hashtags) + ':'.repeat(asterisks) + '.'.repeat(dots) + ']';
-
-    numDone.classList.add('crossfade');
-    numTotal.classList.add('crossfade');
-    progressBar.classList.add('crossfade');
-    
-    setTimeout(() => {
-      numDone.textContent = numDoneCount;
-      numTotal.textContent = numTotalCount;
-      progressBar.textContent = '[' + '#'.repeat(hashtags) + ':'.repeat(asterisks) + '.'.repeat(dots) + ']';
-
-      numDone.classList.remove('crossfade');
-      numTotal.classList.remove('crossfade');
-      progressBar.classList.remove('crossfade');
-    }, 0.5 * 1000);
-
-    console.log({numDoneCount, numTotalCount});
-  }
+  updateProgressScrollComponent(progressBar, calculateProgressBarContent(numDoneCount, numTotalCount, numDoingCount));
+  progressBar.setAttribute('data-numDoing', numDoingCount);
 }
+
 
 /* Todo Selection */
 
@@ -266,10 +242,14 @@ todoWrapper.addEventListener('click', (e) => {
         switch (secondClass) {
           case undefined:
             e.target.classList.add('doing');
+            incrementNumDoing();
+
             linkTodoToToday(todoID);
             break;
           case 'doing':
             e.target.classList.remove('doing');
+            incrementNumDoing(true);
+
             unlinkTodoFromToday(todoID);
             break;
           case 'done':
@@ -277,13 +257,17 @@ todoWrapper.addEventListener('click', (e) => {
             break;
         }
       } else {
-        e.target.classList.toggle('done');
-
         switch (secondClass) {
           case undefined:
+            e.target.classList.add('done');
+            incrementNumDone();
+
             markTodoAsDone(todoID);
             break;
           case 'done':
+            e.target.classList.remove('done');
+            incrementNumDone(true);
+
             markTodoAsNotDone(todoID);
             break;
         }
@@ -293,9 +277,63 @@ todoWrapper.addEventListener('click', (e) => {
   }
 });
 
-/* Other */
 
-// Progress-scroll Rollup Effect //
+/* Progress-scroll */
+
+// Stat Update Functions //
+
+function updateProgressScrollComponent(component, updatedContent, increment=0) {
+  if (!updatedContent && increment !== 0) {
+    updatedContent = +component.textContent + increment;
+  }
+
+  if (appLoad) {
+    component.textContent = updatedContent;
+  } else {
+    component.dataset.content = updatedContent;
+    component.classList.add('crossfade');
+    setTimeout(() => {
+      component.textContent = updatedContent;
+      component.classList.remove('crossfade');
+    }, 0.5 * 1000);
+  }
+}
+
+function calculateProgressBarContent(numDoneCount, numTotalCount, numDoingCount) {
+  const hashtags = Math.round(numDoneCount / numTotalCount * 12);
+  const asterisks = Math.round(numDoingCount / numTotalCount * 12);
+  const dots = 12 - asterisks - hashtags;
+
+  console.log({numDoneCount, numTotalCount, numDoingCount});
+
+  return '[' + '#'.repeat(hashtags) + ':'.repeat(asterisks) + '.'.repeat(dots) + ']';
+}
+
+function incrementNumDone(decrement=false) {
+  let numDoneCount = +numDone.textContent;
+  numDoneCount = (decrement) ? numDoneCount - 1 : numDoneCount + 1;
+  updateProgressScrollComponent(numDone, numDoneCount);
+
+  const numTotalCount = +numTotal.textContent;
+  const numDoingCount = +progressBar.dataset['numdoing'];
+  updateProgressScrollComponent(progressBar, calculateProgressBarContent(numDoneCount, numTotalCount, numDoingCount));
+}
+
+function incrementNumTotal(decrement=false) {
+
+}
+
+function incrementNumDoing(decrement=false) {
+  let numDoingCount = +progressBar.dataset['numdoing'];
+  numDoingCount = (decrement) ? numDoingCount - 1 : numDoingCount + 1;
+  progressBar.setAttribute('data-numdoing', numDoingCount);
+
+  const numTotalCount = +numTotal.textContent;
+  const numDoneCount = +numDone.textContent; 
+  updateProgressScrollComponent(progressBar, calculateProgressBarContent(numDoneCount, numTotalCount, numDoingCount));
+}
+
+// Rollup Effect //
 
 progressScroll.querySelector('.scroll-decor-container').addEventListener('click' , () => {
   progressScroll.classList.toggle('rollup');
