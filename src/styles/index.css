@@ -212,6 +212,10 @@ main {
 }
 
 /* Scroll decor */
+.scroll-decor-container:hover {
+  cursor: pointer;
+}
+
 .scroll-decor {
   background-color: rgb(225, 175, 95);
   box-shadow: 2px 2px 3px rgb(0, 0, 0, 0.25);
@@ -279,10 +283,6 @@ main {
   padding: 0.25rem;
   margin: 0 0.3125rem;
   transition: background-color 0.5s;
-}
-
-.progress-bar:hover {
-  cursor: default;
 }
 
 /* Crossfade effect (hacky but it does work) */
