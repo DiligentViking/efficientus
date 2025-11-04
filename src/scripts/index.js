@@ -64,7 +64,7 @@ for (const list of listsArray) {
   const sidebarItem = document.createElement('li');
 
   sidebarItem.setAttribute('class', 'sidebar-item');
-  sidebarItem.setAttribute('data-list', list);
+  sidebarItem.dataset.list = list;
 
   const img = document.createElement('img');
   img.src = scrollImg;
@@ -126,12 +126,12 @@ function renderTodoListDOM(list) {
   for (const todoData of todoArray) {
     const todoElem = document.createElement('div');
     todoElem.classList.add('todo');
-    todoElem.setAttribute('data-todoID', todoData.todoID);
+    todoElem.dataset.todoid = todoData.todoID;
 
     const checkbox = document.createElement('input');
     checkbox.classList.add('checkbox');
     checkbox.setAttribute('type', 'checkbox');
-    checkbox.setAttribute('data-todoID', todoData.todoID);
+    checkbox.dataset.todoid = todoData.todoID;
     if (todoData.isDone === 1) {
       checkbox.classList.add('done');
       if (list !== 'Today') {
@@ -168,7 +168,7 @@ function renderTodoListDOM(list) {
 
     const priority = document.createElement('button');
     priority.classList.add('priority');
-    priority.setAttribute('data-todoID', todoData.todoID);
+    priority.dataset.todoid = todoData.todoID;
     const priorityIcon = document.createElement('span');
     let priorityText;
     switch (todoData.priority) {
@@ -230,7 +230,7 @@ function renderTodoListDOM(list) {
   updateProgressScrollComponent(numTotal, numTotalCount);
 
   updateProgressScrollComponent(progressBar, calculateProgressBarContent(numDoneCount, numTotalCount, numDoingCount));
-  progressBar.setAttribute('data-numDoing', numDoingCount);
+  progressBar.dataset.numdoing = numDoingCount;
 }
 
 
@@ -364,7 +364,7 @@ function incrementNumTotal(decrement=false) {
 function incrementNumDoing(decrement=false) {
   let numDoingCount = +progressBar.dataset['numdoing'];
   numDoingCount = (decrement) ? numDoingCount - 1 : numDoingCount + 1;
-  progressBar.setAttribute('data-numdoing', numDoingCount);
+  progressBar.dataset.numdoing = numDoingCount;
 
   const numTotalCount = +numTotal.textContent;
   const numDoneCount = +numDone.textContent; 
