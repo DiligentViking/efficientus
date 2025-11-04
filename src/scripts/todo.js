@@ -39,6 +39,7 @@ const updateTodo = (todoId, prop, val, todos=getTodos()) => {  // This should no
   setTodos(todos);
 }
 
+
 const markTodoAsDone = (todoID) => {
   updateTodo(todoID, 'isDone', 1);
 }
@@ -46,6 +47,16 @@ const markTodoAsDone = (todoID) => {
 const markTodoAsNotDone = (todoID) => {
   updateTodo(todoID, 'isDone', 0);
 }
+
+
+const updateTodoPriority = (todoID, priorityNumber) => {
+  if ([1, 2, 3].includes(priorityNumber)) {
+    updateTodo(todoID, 'priority', priorityNumber);
+  } else {
+    console.log('invalid');
+  }
+}
+
 
 const linkTodoToToday = (todoID, todos=getTodos()) => {
   if (todos[todoID].lists[0] !== 'Today') {
@@ -73,4 +84,4 @@ const deleteTodo = (todoId, trash=true, todos=getTodos()) => {
 }
 
 
-export { createTodo, readAllTodos, markTodoAsDone, markTodoAsNotDone, linkTodoToToday, unlinkTodoFromToday, deleteTodo };
+export { createTodo, readAllTodos, markTodoAsDone, markTodoAsNotDone, updateTodoPriority, linkTodoToToday, unlinkTodoFromToday, deleteTodo };

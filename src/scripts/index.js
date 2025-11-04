@@ -2,7 +2,7 @@ import '../styles/index.css';
 import scrollImg from '../assets/images/scroll-outline.svg';
 
 import { createProfile, createList, readLists } from './storage.js';
-import { createTodo, readAllTodos, markTodoAsDone, markTodoAsNotDone, linkTodoToToday, unlinkTodoFromToday, deleteTodo } from './todo.js';
+import { createTodo, readAllTodos, markTodoAsDone, markTodoAsNotDone, updateTodoPriority, linkTodoToToday, unlinkTodoFromToday, deleteTodo } from './todo.js';
 
 
 /* Initial Population */
@@ -131,6 +131,7 @@ function renderTodoListDOM(list) {
     const checkbox = document.createElement('input');
     checkbox.classList.add('checkbox');
     checkbox.setAttribute('type', 'checkbox');
+    checkbox.setAttribute('data-todoID', todoData.todoID);
     if (todoData.isDone === 1) {
       checkbox.classList.add('done');
       if (list !== 'Today') {
@@ -167,6 +168,7 @@ function renderTodoListDOM(list) {
 
     const priority = document.createElement('button');
     priority.classList.add('priority');
+    priority.setAttribute('data-todoID', todoData.todoID);
     const priorityIcon = document.createElement('span');
     let priorityText;
     switch (todoData.priority) {
@@ -238,45 +240,78 @@ todoWrapper.addEventListener('click', (e) => {
   console.log('selected item\'s class: ' + e.target.classList[0]);
   switch (e.target.classList[0]) {
     case 'checkbox':
-      const secondClass = e.target.classList[1];
-      const todoID = e.target.parentNode.dataset.todoid;
+      const checkboxTodoID = e.target.dataset.todoid;
+      const checkboxStatus = e.target.classList[1];
 
       if (currentPlace !== 'Today') {
-        switch (secondClass) {
+        switch (checkboxStatus) {
           case undefined:
             e.target.classList.add('doing');
             incrementNumDoing();
 
-            linkTodoToToday(todoID);
+            linkTodoToToday(checkboxTodoID);
             break;
           case 'doing':
             e.target.classList.remove('doing');
             incrementNumDoing(true);
 
-            unlinkTodoFromToday(todoID);
+            unlinkTodoFromToday(checkboxTodoID);
             break;
           case 'done':
             alert('Todos are checked/unchecked in Today!')
             break;
         }
       } else {
-        switch (secondClass) {
+        switch (checkboxStatus) {
           case undefined:
             e.target.classList.add('done');
             incrementNumDone();
 
-            markTodoAsDone(todoID);
+            markTodoAsDone(checkboxTodoID);
             break;
           case 'done':
             e.target.classList.remove('done');
             incrementNumDone(true);
 
-            markTodoAsNotDone(todoID);
+            markTodoAsNotDone(checkboxTodoID);
             break;
         }
       }
-
       break;
+    case 'priority':
+      const priorityTodoID = e.target.dataset.todoid;
+      const priorityLevel = e.target.classList[1];
+      console.log({priorityTodoID});
+
+      switch (priorityLevel) {
+        case 'normal':
+          e.target.classList.remove('normal');
+          e.target.classList.add('high');
+
+          e.target.textContent = '';
+          e.target.append(document.createElement('span'), 'High');
+
+          updateTodoPriority(priorityTodoID, 3);
+          break;
+        case 'high':
+          e.target.classList.remove('high');
+          e.target.classList.add('low');
+
+          e.target.textContent = '';
+          e.target.append(document.createElement('span'), 'Low');
+
+          updateTodoPriority(priorityTodoID, 1);
+          break;
+        case 'low':
+          e.target.classList.remove('low');
+          e.target.classList.add('normal');
+
+          e.target.textContent = '';
+          e.target.append(document.createElement('span'), 'Normal');
+
+          updateTodoPriority(priorityTodoID, 2);
+          break;
+      }
   }
 });
 

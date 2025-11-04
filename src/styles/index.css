@@ -475,7 +475,6 @@ main {
 .priority,
 .datetimedue {
   color: rgb(185, 115, 55);
-  /* color: rgb(216, 68, 9); */
   border-radius: 0.5rem;
   padding: 0.25rem;
   transform: translate(-0.25rem);
@@ -487,7 +486,6 @@ main {
 .datetimedue > span {
   background-color: currentColor;
   color: inherit;
-  /* color: rgb(216, 68, 9); */
   width: 0.875rem;
   height: 0.875rem;
   margin-right: 0.125rem;
@@ -503,6 +501,13 @@ main {
 .priority {
   width: 4.020625rem;  /* the width of their largest state */
   margin-right: 0.0625rem;
+}
+
+.priority.high {
+  color: rgb(216, 68, 9);
+}
+.priority.low {
+  color: #6E8592;
 }
 
 .priority > span {
