@@ -126,6 +126,7 @@ body {
   height: auto;
   margin-right: 0.375rem;
   margin-bottom: -0.3125rem;
+  pointer-events: none;
 }
 
 .sidebar-label.lists {
@@ -508,6 +509,11 @@ main {
 }
 .priority.low {
   color: #6E8592;
+}
+
+.priority > span,
+.datetimedue > span {
+  pointer-events: none;
 }
 
 .priority > span {
