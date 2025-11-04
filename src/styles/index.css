@@ -43,6 +43,10 @@ button {
   background-color: rgb(118, 161, 98);
 }
 
+.no-hover {
+  cursor: default !important;
+}
+
 body {
   background-color: rgb(240, 194, 135, 1);
   font-family: 'ubuntu-regular';
@@ -425,6 +429,10 @@ main {
 .checkbox:hover {
   cursor: pointer;
   border: 2px solid rgb(80, 50, 25, 1);
+}
+
+.checkbox.no-hover {
+  border: 2px solid rgb(80, 50, 25, 0.75);
 }
 
 /* .checkbox:not(.done):hover::after {
