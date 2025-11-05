@@ -22,7 +22,7 @@ if (!createProfile()) {
   createTodo(['Today', 'Appointments'], 'Get D\'s birthday present', '', null, 2);
   createTodo(['Today'], 'Research how to increase reading speed', '', null, 2);
   createTodo(['Odin Project'], 'Check out other solutions', 'TOP guide article says it\'s essential', null, 2);
-  createTodo(['Odin Project'], 'Do "Linting" lesson', '', null, 1);
+  createTodo(['Odin Project'], 'Do "Linting" lesson', '', null, 2);
 }
 
 console.log(`
@@ -40,8 +40,9 @@ let currentPlace;
 
 const listsArray = readLists();
 
-const sidebarMenu = document.querySelector('.sidebar-menu');
-const sidebarGroupLists = document.querySelector('.sidebar-group.lists');
+const sidebar = document.querySelector('.sidebar');
+const sidebarMenu = sidebar.querySelector('.sidebar-menu');
+const sidebarGroupLists = sidebar.querySelector('.sidebar-group.lists');
 
 const contentArea = document.querySelector('.content');
 const contentTitle = contentArea.querySelector('.content-title');
@@ -85,6 +86,8 @@ sidebarMenu.addEventListener('click', (e) => {
     const prevSelected = sidebarMenu.querySelector('.selected');
     if (prevSelected) prevSelected.classList.remove('selected');
     e.target.classList.add('selected');
+    
+    toggleMobileSidebarOpen()
 
     // Effects and Rendering //
     if (appLoad) {
@@ -376,3 +379,24 @@ function incrementNumDoing(decrement=false) {
 progressScroll.querySelector('.scroll-decor-container').addEventListener('click' , () => {
   progressScroll.classList.toggle('rollup');
 });
+
+
+/* Other */
+
+// Sidebar Button for Mobile //
+
+document.querySelector('.sidebar-button').addEventListener('click', toggleMobileSidebarOpen)
+
+function toggleMobileSidebarOpen() {
+  sidebar.classList.toggle('open');
+  if (sidebar.classList.contains('no-logo')) {
+    console.log('logo');
+    setTimeout(() => {
+      console.log('logo removed!');
+      sidebar.classList.remove('no-logo');
+    }, 0.5 * 1000)
+  } else {
+    sidebar.classList.add('no-logo');
+  }
+  document.querySelector('.sidebar-button').classList.toggle('open');
+}

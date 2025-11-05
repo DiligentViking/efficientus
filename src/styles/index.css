@@ -38,6 +38,11 @@ button {
   font-size: 0.75rem;
 }
 
+img {
+  max-width: 100%;
+  max-height: 100%;
+}
+
 ::selection {
   color: inherit;
   background-color: rgb(118, 161, 98);
@@ -45,6 +50,10 @@ button {
 
 .no-hover {
   cursor: default !important;
+}
+
+.no-opacity {
+  opacity: 0;
 }
 
 body {
@@ -60,7 +69,7 @@ body {
 /* Sidebar */
 
 .sidebar {
-  background-color: rgb(0, 0, 0, 0.15);
+  background-color: rgb(197, 159, 108);
   padding: 1rem;
   width: 13.875rem;
   height: 100%;
@@ -75,6 +84,28 @@ body {
   transition: width 0.5s ease;
 }
 /* ----- */
+
+.sidebar-button {
+  border-radius: 0.375rem;
+  padding: 0.25rem;
+  height: 2rem;
+  width: 2rem;
+  position: absolute;
+  top: 1rem;
+  left: 0.5rem;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.5s ease, visibility 0.5s ease, left 0.5s ease;
+}
+
+.sidebar-button:hover {
+  background-color: rgb(0, 0, 0, 0.10);
+  cursor: pointer;
+}
+
+.sidebar-button.open {
+  left: 11.5rem;
+}
 
 .logo {
   font-family: 'ubuntu-medium';
@@ -198,9 +229,6 @@ main {
 .content-title,
 .todo-wrapper {
   transition: opacity 0.25s ease;
-}
-.no-opacity {
-  opacity: 0;
 }
 
 
@@ -550,7 +578,7 @@ main {
 
 /* Responsive Design */
 
-@media screen and (max-width: 1280px) {
+@media screen and (max-width: 1380px) {
   .content {
     max-width: 47rem;
   }
@@ -580,6 +608,24 @@ main {
 @media screen and (max-width: 768px) {
   .sidebar {
     opacity: 0;
+  }
+
+  .sidebar.open {
+    opacity: 1;
+  }
+
+  .sidebar.no-logo > .logo {
+    border-bottom: none;
+  }
+
+  .sidebar.no-logo > .logo > span {
+    opacity: 0;
+  }
+
+  .sidebar-button {
+    z-index: 1;
+    visibility: visible;
+    opacity: 1;
   }
 
   .sidebar-placeholder {
