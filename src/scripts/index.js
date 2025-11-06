@@ -53,6 +53,8 @@ const numDone = progressScroll.querySelector('.num-done');
 const numTotal = progressScroll.querySelector('.num-total');
 const progressBar = progressScroll.querySelector('.progress-bar');
 
+const addTodo = document.querySelector('.add-todo');
+
 let appLoad = true;
 
 
@@ -98,11 +100,13 @@ sidebarMenu.addEventListener('click', (e) => {
 
     contentTitle.classList.add('no-opacity');
     todoWrapper.classList.add('no-opacity');
+    addTodo.classList.add('no-opacity');
 
     setTimeout(() => {
       renderTodoListDOM(dataList);
       contentTitle.classList.remove('no-opacity');
       todoWrapper.classList.remove('no-opacity');
+      addTodo.classList.remove('no-opacity');
     }, 0.25 * 1000);
   }
 });
