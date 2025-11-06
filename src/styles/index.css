@@ -112,7 +112,7 @@ body {
   font-size: 1.75rem;
   letter-spacing: -0.5px;
   padding-bottom: 0.75rem;
-  border-bottom: 1px solid rgb(168, 137, 95);
+  border-bottom: 1px solid rgb(72, 58, 41, 0.15);
   margin-left: -0.5rem;
   margin-bottom: 1rem;
 }
@@ -181,12 +181,19 @@ body {
   padding: 0.25rem;
   margin-right: -0.25rem;
   opacity: 0;
+  opacity: 1;
   transition: opacity 0.5s ease;
 }
 
-.new-list > svg {
+.new-list::before {
+  content: '';
+  -webkit-mask: url('../assets/images/plus-icon2.svg') no-repeat center / contain;
+  mask: url('../assets/images/plus-icon2.svg') no-repeat center / contain;
+  background-color: currentColor;
+  color: rgb(72, 58, 41);
   border: 1px solid rgb(72, 58, 41);
   border-radius: 50%;
+  display: block;
   padding: 2px;
   width: 21px;
   height: 21px;
@@ -197,8 +204,8 @@ body {
   cursor: pointer;
 }
 
-.new-list:hover > svg {
-  background-color: rgb(72, 58, 41);
+.new-list:hover::before {
+  /* background-color: rgb(72, 58, 41); */
   color: rgb(204 165 115);
 }
 /* ----- */
