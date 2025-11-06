@@ -578,7 +578,7 @@ main {
 
 /* Responsive Design */
 
-@media screen and (max-width: 1380px) {
+@media screen and (max-width: 1330px) {
   .content {
     max-width: 47rem;
   }
@@ -608,10 +608,12 @@ main {
 @media screen and (max-width: 768px) {
   .sidebar {
     opacity: 0;
+    visibility: hidden;
   }
 
   .sidebar.open {
     opacity: 1;
+    visibility: visible;
   }
 
   .sidebar.no-logo > .logo {

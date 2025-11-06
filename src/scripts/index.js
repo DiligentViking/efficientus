@@ -87,14 +87,14 @@ sidebarMenu.addEventListener('click', (e) => {
     if (prevSelected) prevSelected.classList.remove('selected');
     e.target.classList.add('selected');
     
-    toggleMobileSidebarOpen()
-
     // Effects and Rendering //
     if (appLoad) {
       renderTodoListDOM(dataList);
       appLoad = false;
       return;
     }
+
+    toggleMobileSidebarOpen();
 
     contentTitle.classList.add('no-opacity');
     todoWrapper.classList.add('no-opacity');
