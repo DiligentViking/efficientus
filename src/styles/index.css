@@ -85,7 +85,9 @@ body {
 /* Sidebar */
 
 .sidebar {
-  background-color: rgb(197, 159, 108);
+  background-color: rgb(207, 168, 116);
+  background-color: rgb(218, 174, 118);
+  border-right: 1px solid rgb(168, 137, 95);
   padding: 1rem;
   width: 13.875rem;
   height: 100%;
@@ -663,6 +665,12 @@ main {
 }
 
 @media screen and (max-width: 768px) {
+  .overlay.sidebar-open {
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 0.5s ease;
+  }
+
   .sidebar {
     opacity: 0;
     visibility: hidden;

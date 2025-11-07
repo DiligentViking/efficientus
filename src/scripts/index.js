@@ -40,6 +40,8 @@ let currentPlace;
 
 const listsArray = readLists();
 
+const overlay = document.querySelector('.overlay');
+
 const sidebar = document.querySelector('.sidebar');
 const sidebarMenu = sidebar.querySelector('.sidebar-menu');
 const sidebarGroupLists = sidebar.querySelector('.sidebar-group.lists');
@@ -393,6 +395,7 @@ document.querySelector('.sidebar-button').addEventListener('click', toggleMobile
 
 function toggleMobileSidebarOpen() {
   sidebar.classList.toggle('open');
+  overlay.classList.toggle('sidebar-open');
   if (sidebar.classList.contains('no-logo')) {
     console.log('logo');
     setTimeout(() => {
