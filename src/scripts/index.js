@@ -396,14 +396,8 @@ document.querySelector('.sidebar-button').addEventListener('click', toggleMobile
 function toggleMobileSidebarOpen() {
   sidebar.classList.toggle('open');
   overlay.classList.toggle('sidebar-open');
-  if (sidebar.classList.contains('no-logo')) {
-    console.log('logo');
-    setTimeout(() => {
-      console.log('logo removed!');
-      sidebar.classList.remove('no-logo');
-    }, 0.5 * 1000)
-  } else {
-    sidebar.classList.add('no-logo');
-  }
+  setTimeout(() => {
+    sidebar.classList.toggle('anti-janky-width');
+  }, 0.5 * 1000)
   document.querySelector('.sidebar-button').classList.toggle('open');
 }

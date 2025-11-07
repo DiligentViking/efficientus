@@ -110,7 +110,7 @@ body {
   height: 2rem;
   width: 2rem;
   position: absolute;
-  top: 1rem;
+  top: 0.5rem;
   left: 0.5rem;
   opacity: 0;
   visibility: hidden;
@@ -124,7 +124,7 @@ body {
 }
 
 .sidebar-button.open {
-  left: 11.5rem;
+  left: 12.5rem;
 }
 
 .logo {
@@ -678,18 +678,15 @@ main {
   }
 
   .sidebar.open {
-    /* width: 15rem; */
+    width: 15rem;
+    padding-right: 2.125rem;
     opacity: 1;
     visibility: visible;
     transition: opacity 0.5s ease;
   }
-
-  .sidebar.no-logo > .logo {
-    border-bottom: none;
-  }
-
-  .sidebar.no-logo > .logo > span {
-    opacity: 0;
+  .sidebar.anti-janky-width {
+    width: 15rem;
+    padding-right: 2.125rem;
   }
 
   .sidebar-button {
