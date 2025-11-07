@@ -56,7 +56,7 @@ const numTotal = progressScroll.querySelector('.num-total');
 const progressBar = progressScroll.querySelector('.progress-bar');
 
 const addTodo = document.querySelector('.add-todo');
-const addTodoModal = document.querySelector('#add-todo-modal');
+const newTodoModal = document.querySelector('#new-todo-modal');
 
 let appLoad = true;
 
@@ -329,9 +329,18 @@ todoWrapper.addEventListener('click', (e) => {
 /* Todo Creation */
 
 addTodo.addEventListener('click', () => {
-  addTodoModal.showModal();
-  addTodoModal.classList.add('open');
+  newTodoModal.showModal();
+  newTodoModal.classList.add('open');
   overlay.classList.add('show');
+});
+
+newTodoModal.addEventListener('cancel', (e) => {
+  e.preventDefault();
+  newTodoModal.classList.remove('open');
+  overlay.classList.remove('show');
+  setTimeout(() => {
+    newTodoModal.close();
+  }, 0.5 * 1000);
 });
 
 
