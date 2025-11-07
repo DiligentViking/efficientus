@@ -57,10 +57,10 @@ img {
 }
 
 .overlay {
-  background-color: rgb(0, 0, 0, 0.25);
+  background-color: rgb(0, 0, 0, 0.4);
   position: absolute;
   inset: 0;
-  z-index: 1;
+  /* z-index: 1; */
   opacity: 0;
   visibility: hidden;
   transition: opacity 0.5s ease, visibility 0.5s;
@@ -70,6 +70,10 @@ img {
   opacity: 1;
   visibility: visible;
   transition: opacity 0.5s ease;
+}
+
+dialog::backdrop {
+  visibility: hidden;
 }
 
 body {
@@ -631,6 +635,96 @@ main {
 .add-todo:hover > svg {
   color: rgb(240, 194, 135, 1);
   /* color: rgb(80, 50, 25) */
+}
+
+
+/* Modals */
+
+#add-todo-modal {
+  background: inherit;
+  outline: none;
+  border: 1px solid rgb(80, 50, 25);
+  border-radius: 1.5rem;
+  box-shadow: 2px 2px 6px rgb(0, 0, 0, 0.4);
+  padding: 1rem;
+  width: 20rem;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  translate: 0 1rem;
+  transition: opacity 0.5s ease, translate 0.5s ease;
+}
+
+#add-todo-modal.open {
+  opacity: 1;
+  scale: 1;
+  translate: 0;
+}
+
+#add-todo-modal > h2 {
+  color: rgb(40, 25, 15);
+  font-size: 1.125rem;
+  /* border-bottom: 1px solid rgb(120 86 53 / 0.75); */
+  padding: 0.25rem 0.75rem 0.25rem 0.75rem;
+  width: fit-content;
+  margin: auto;
+  margin-bottom: 2rem;
+}
+
+.input-row {
+  max-width: 100%;
+  display: flex;
+  align-items: normal;
+  gap: 0.25rem;
+  margin-bottom: 1rem;
+}
+
+.input-row > label {
+  color: rgb(40, 25, 15);
+  font-size: 0.875rem;
+  width: 2.5rem;
+  flex-shrink: 0;
+  margin-top: 0.125rem;
+}
+
+.input-row > input,
+.input-row > textarea {
+  /* background-color: rgb(245, 210, 160); */
+  background-color: rgb(240, 194, 135, 1);
+  font-family: inherit;
+  font-size: 1rem;
+  border: 1px solid rgb(80, 50, 25);
+  border-radius: 0.25rem;
+  padding: 0.1875rem 0.25rem;
+  max-width: calc(100% - 2.75rem);  /* hack */
+  flex: 1;
+}
+
+.input-row > textarea {
+  overflow-y: hidden;
+  resize: none;
+}
+
+#add-todo {
+  /* background-color: rgb(120 86 53); */
+  /* color: rgb(240, 194, 135); */
+  color: rgb(40, 25, 15);
+  font-size: 0.75rem;
+  border: 1px solid rgb(80, 50, 25);
+  border-radius: 0.25rem;
+  padding: 0.25rem 0.5rem;
+  display: block;
+  margin: auto;
+  margin-top: 2rem;
+  transition: 0.25s background-color ease, 0.25s color ease;
+}
+
+#add-todo:hover {
+  background-color: rgb(80, 50, 25);
+  color: rgb(240, 194, 135);
+  cursor: pointer;
 }
 
 

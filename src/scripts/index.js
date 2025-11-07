@@ -56,6 +56,7 @@ const numTotal = progressScroll.querySelector('.num-total');
 const progressBar = progressScroll.querySelector('.progress-bar');
 
 const addTodo = document.querySelector('.add-todo');
+const addTodoModal = document.querySelector('#add-todo-modal');
 
 let appLoad = true;
 
@@ -243,7 +244,7 @@ function renderTodoListDOM(list) {
 }
 
 
-/* Todo Selection */
+/* Todo Selection & Updation */
 
 todoWrapper.addEventListener('click', (e) => {
   console.log('selected item\'s class: ' + e.target.classList[0]);
@@ -325,6 +326,15 @@ todoWrapper.addEventListener('click', (e) => {
 });
 
 
+/* Todo Creation */
+
+addTodo.addEventListener('click', () => {
+  addTodoModal.showModal();
+  addTodoModal.classList.add('open');
+  overlay.classList.add('show');
+});
+
+
 /* Progress-scroll */
 
 // Stat Update Functions //
@@ -401,3 +411,12 @@ function toggleMobileSidebarOpen() {
   }, 0.5 * 1000)
   document.querySelector('.sidebar-button').classList.toggle('open');
 }
+
+// Auto-resizing Textarea //
+
+const textarea = document.querySelector('textarea');
+
+textarea.addEventListener('input', () => {
+    textarea.style.height = 'auto'; // Reset height
+    textarea.style.height = `${textarea.scrollHeight}px`; // Set height to match scroll height
+});
