@@ -70,6 +70,7 @@ for (const list of listsArray) {
   const sidebarItem = document.createElement('li');
 
   sidebarItem.setAttribute('class', 'sidebar-item');
+  sidebarItem.setAttribute('tabindex', '0');
   sidebarItem.dataset.list = list;
 
   const img = document.createElement('img');
@@ -79,6 +80,8 @@ for (const list of listsArray) {
 
   sidebarGroupLists.appendChild(sidebarItem);
 }
+
+document.querySelector('[data-list="Today"]').setAttribute('tabindex', '0');
 
 // Sidebar-item Selection //
 
