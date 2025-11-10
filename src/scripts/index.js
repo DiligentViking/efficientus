@@ -38,6 +38,8 @@ console.table(readAllTodos());
 
 let currentPlace;
 
+let activeArea = document.activeElement.tagName;
+
 const listsArray = readLists();
 
 const overlay = document.querySelector('.overlay');
@@ -80,8 +82,6 @@ for (const list of listsArray) {
 
   sidebarGroupLists.appendChild(sidebarItem);
 }
-
-document.querySelector('[data-list="Today"]').setAttribute('tabindex', '0');
 
 // Sidebar-item Selection //
 
@@ -144,6 +144,7 @@ function renderTodoListDOM(list) {
     const checkbox = document.createElement('input');
     checkbox.classList.add('checkbox');
     checkbox.setAttribute('type', 'checkbox');
+    checkbox.setAttribute('tabindex', '0');
     checkbox.dataset.todoid = todoData.todoID;
     if (todoData.isDone === 1) {
       checkbox.classList.add('done');
@@ -181,6 +182,7 @@ function renderTodoListDOM(list) {
 
     const priority = document.createElement('button');
     priority.classList.add('priority');
+    priority.setAttribute('tabindex', '0');
     priority.dataset.todoid = todoData.todoID;
     const priorityIcon = document.createElement('span');
     let priorityText;
@@ -204,6 +206,8 @@ function renderTodoListDOM(list) {
 
     const datetimedue = document.createElement('button');
     datetimedue.classList.add('datetimedue');
+    datetimedue.setAttribute('tabindex', '0');
+    datetimedue.dataset.todoid = todoData.todoID;
     const datetimedueIcon = document.createElement('span');
     let datetimedueText;
     if (todoData.datetimedue) {
@@ -409,7 +413,98 @@ progressScroll.querySelector('.scroll-decor-container').addEventListener('click'
 });
 
 
-/* Other */
+/* Keyboard Navigation */
+
+function moveToNextTabIndex(areaNode, moveBy=1) {
+  const allTabbableElems = areaNode.querySelectorAll('[tabindex="0"');
+
+  const indexOfFocusedElem = Array.from(allTabbableElems).indexOf(document.activeElement);
+
+  const elemToFocus = allTabbableElems[indexOfFocusedElem + moveBy];
+
+  if (elemToFocus) {
+    elemToFocus.focus();
+  }
+}
+
+window.addEventListener('keydown', (e) => {
+  switch (e.key) {
+    case 'Tab':
+      if (e.key !== 'Tab') return;
+
+      e.preventDefault();
+
+      switch (activeArea) {
+        case 'BODY':
+          activeArea = 'SIDEBAR';
+          sidebar.querySelector('.today').focus();
+          break;
+        case 'SIDEBAR':
+          activeArea = 'CONTENT';
+          contentArea.querySelector('.checkbox').focus();
+          break;
+        case 'CONTENT':
+          activeArea = 'SIDEBAR';
+          sidebar.querySelector('.today').focus();
+          break;
+      }
+      break;
+    case 'ArrowDown':
+      switch (activeArea) {
+        case 'SIDEBAR':
+          moveToNextTabIndex(sidebar);
+          break;
+        case 'CONTENT':
+          const todoID = +document.activeElement.dataset.todoid;
+          const todo = contentArea.querySelector(`.todo[data-todoid="${todoID}"`);
+          const nextTodo = todo.nextSibling;
+          if (nextTodo) {
+            nextTodo.querySelector('.checkbox').focus();
+          }
+          break;
+      }
+      break;
+    case 'ArrowUp':
+      switch (activeArea) {
+        case 'SIDEBAR':
+          moveToNextTabIndex(sidebar, -1);
+          break;
+        case 'CONTENT':
+          const todoID = +document.activeElement.dataset.todoid;
+          const todo = contentArea.querySelector(`.todo[data-todoid="${todoID}"`);
+          const prevTodo = todo.previousSibling;  // Only difference from ArrowDown version
+          if (prevTodo) {
+            prevTodo.querySelector('.checkbox').focus();
+          }
+          break;
+      }
+      break;
+    case 'ArrowRight':
+      switch (activeArea) {
+        case 'SIDEBAR':
+          break;
+        case 'CONTENT':
+          const todoID = +document.activeElement.dataset.todoid;
+          const todo = contentArea.querySelector(`.todo[data-todoid="${todoID}"`);
+          moveToNextTabIndex(todo);
+          break;
+      }
+      break;
+    case 'ArrowLeft':
+      switch (activeArea) {
+        case 'SIDEBAR':
+          break;
+        case 'CONTENT':
+          const todoID = +document.activeElement.dataset.todoid;
+          const todo = contentArea.querySelector(`.todo[data-todoid="${todoID}"`);
+          moveToNextTabIndex(todo, -1);
+          break;
+      }
+      break;
+  }
+});
+
+/* Other (Small Things) */
 
 // Sidebar Button for Mobile //
 
