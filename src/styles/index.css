@@ -639,6 +639,7 @@ main {
   color: rgb(120 86 53);
   margin-left: 0.1875rem;
   margin-top: 0.125rem;
+  pointer-events: none;
   transition: color .25s ease;
 }
 

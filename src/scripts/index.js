@@ -339,6 +339,9 @@ addTodo.addEventListener('click', () => {
   newTodoModal.showModal();
   newTodoModal.classList.add('open');
   overlay.classList.add('show');
+
+  activeArea = 'MODAL';
+  console.log('modal opening');
 });
 
 newTodoModal.addEventListener('cancel', (e) => {
@@ -348,6 +351,8 @@ newTodoModal.addEventListener('cancel', (e) => {
   setTimeout(() => {
     newTodoModal.close();
   }, 0.5 * 1000);
+
+  activeArea = 'BODY';
 });
 
 
@@ -415,8 +420,10 @@ progressScroll.querySelector('.scroll-decor-container').addEventListener('click'
 
 /* Keyboard Navigation */
 
+// Moving with Tabs and Arrows //
+
 function moveToNextTabIndex(areaNode, moveBy=1) {
-  const allTabbableElems = areaNode.querySelectorAll('[tabindex="0"');
+  const allTabbableElems = areaNode.querySelectorAll('[tabindex="0"]');
 
   const indexOfFocusedElem = Array.from(allTabbableElems).indexOf(document.activeElement);
 
@@ -428,6 +435,8 @@ function moveToNextTabIndex(areaNode, moveBy=1) {
 }
 
 window.addEventListener('keydown', (e) => {
+  console.log(activeArea);
+  if (activeArea === 'MODAL') return;
   switch (e.key) {
     case 'Tab':
       if (e.key !== 'Tab') return;
@@ -435,10 +444,6 @@ window.addEventListener('keydown', (e) => {
       e.preventDefault();
 
       switch (activeArea) {
-        case 'BODY':
-          activeArea = 'SIDEBAR';
-          sidebar.querySelector('.today').focus();
-          break;
         case 'SIDEBAR':
           activeArea = 'CONTENT';
           contentArea.querySelector('.checkbox').focus();
@@ -447,16 +452,23 @@ window.addEventListener('keydown', (e) => {
           activeArea = 'SIDEBAR';
           sidebar.querySelector('.today').focus();
           break;
+        default:
+          activeArea = 'SIDEBAR';
+          sidebar.querySelector('.today').focus();
       }
       break;
     case 'ArrowDown':
       switch (activeArea) {
+        case 'BODY':
+          activeArea = 'SIDEBAR';
+          sidebar.querySelector('.today').focus();
+          break;
         case 'SIDEBAR':
           moveToNextTabIndex(sidebar);
           break;
         case 'CONTENT':
           const todoID = +document.activeElement.dataset.todoid;
-          const todo = contentArea.querySelector(`.todo[data-todoid="${todoID}"`);
+          const todo = contentArea.querySelector(`.todo[data-todoid="${todoID}"]`);
           const nextTodo = todo.nextSibling;
           if (nextTodo) {
             nextTodo.querySelector('.checkbox').focus();
@@ -466,12 +478,16 @@ window.addEventListener('keydown', (e) => {
       break;
     case 'ArrowUp':
       switch (activeArea) {
+        case 'BODY':
+          activeArea = 'SIDEBAR';
+          sidebar.querySelector('.today').focus();
+          break;
         case 'SIDEBAR':
           moveToNextTabIndex(sidebar, -1);
           break;
         case 'CONTENT':
           const todoID = +document.activeElement.dataset.todoid;
-          const todo = contentArea.querySelector(`.todo[data-todoid="${todoID}"`);
+          const todo = contentArea.querySelector(`.todo[data-todoid="${todoID}"]`);
           const prevTodo = todo.previousSibling;  // Only difference from ArrowDown version
           if (prevTodo) {
             prevTodo.querySelector('.checkbox').focus();
@@ -501,8 +517,33 @@ window.addEventListener('keydown', (e) => {
           break;
       }
       break;
+    case 'Enter':
+      e.preventDefault();
+      break;
   }
 });
+
+window.addEventListener('click', (e) => {
+  if (activeArea === 'MODAL') return;
+  if (e.target.dataset.list) {
+    activeArea = 'SIDEBAR';
+  } else if (e.target.dataset.todoid) {
+    activeArea = 'CONTENT';
+  } else {
+    if (e.target.getAttribute('tabindex')) return;
+    activeArea = 'BODY';
+  }
+});
+
+// Selecting with Enters and Spaces //
+
+window.addEventListener('keyup', (e) => {
+  if (e.key === 'Enter' || e.key === ' ') {
+    e.preventDefault();
+    document.activeElement.click();
+  }
+});
+
 
 /* Other (Small Things) */
 
