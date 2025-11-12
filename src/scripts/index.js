@@ -143,6 +143,7 @@ function renderTodoListDOM() {
 
   for (const todoData of todoArray) {
     renderTodo(todoData);
+    console.log({numTotalCount});
   }
 
   // Progress-scroll (2) //
@@ -383,11 +384,13 @@ newTodoForm.addEventListener('submit', (e) => {
   createTodo(...Object.values(todoData));
 
   todoData['todoID'] = getLastTodoIndex();
-
+  
   closeModal(newTodoModal);
-
+  
   setTimeout(() => {
     renderTodo(todoData, currentPlace, true);
+  
+    incrementNumTotal();
 
     addTodo.classList.add('push-down');
   }, 0.00 * 1000);
@@ -405,21 +408,36 @@ newTodoForm.addEventListener('submit', (e) => {
 
 // Stat Update Functions //
 
-function updateProgressScrollComponent(component, updatedContent, increment=0) {
-  if (!updatedContent && increment !== 0) {
-    updatedContent = +component.textContent + increment;
-  }
-
+function updateProgressScrollComponent(component, updatedContent) {
   if (appLoad) {
     component.textContent = updatedContent;
-  } else {
-    component.dataset.content = updatedContent;
-    component.classList.add('crossfade');
-    setTimeout(() => {
-      component.textContent = updatedContent;
-      component.classList.remove('crossfade');
-    }, 0.5 * 1000);
+    return;
   }
+  component.dataset.content = updatedContent;
+  component.classList.add('crossfade');
+  setTimeout(() => {
+    component.textContent = updatedContent;
+    component.classList.remove('crossfade');
+  }, 0.5 * 1000);
+}
+
+function incrementNumDone(decrement=false) {
+  numDoneCount = (decrement) ? numDoneCount - 1 : numDoneCount + 1;
+  updateProgressScrollComponent(numDone, numDoneCount);
+  updateProgressScrollComponent(progressBar, calculateProgressBarContent(numDoneCount, numTotalCount, numDoingCount));
+}
+
+function incrementNumTotal(decrement=false) {
+  // numTotalCount = (decrement) ? numTotalCount -1 : numTotalCount + 1;
+  console.log({numTotalCount});
+  updateProgressScrollComponent(numTotal, numTotalCount);
+  updateProgressScrollComponent(progressBar, calculateProgressBarContent(numDoneCount, numTotalCount, numDoingCount));
+
+}
+
+function incrementNumDoing(decrement=false) {
+  numDoingCount = (decrement) ? numDoingCount - 1 : numDoingCount + 1;
+  updateProgressScrollComponent(progressBar, calculateProgressBarContent(numDoneCount, numTotalCount, numDoingCount));
 }
 
 function calculateProgressBarContent(numDoneCount, numTotalCount, numDoingCount) {
@@ -427,33 +445,7 @@ function calculateProgressBarContent(numDoneCount, numTotalCount, numDoingCount)
   const asterisks = Math.round(numDoingCount / numTotalCount * 12);
   const dots = 12 - asterisks - hashtags;
 
-  console.log({numDoneCount, numTotalCount, numDoingCount});
-
   return '[' + '#'.repeat(hashtags) + ':'.repeat(asterisks) + '.'.repeat(dots) + ']';
-}
-
-function incrementNumDone(decrement=false) {
-  let numDoneCount = +numDone.textContent;
-  numDoneCount = (decrement) ? numDoneCount - 1 : numDoneCount + 1;
-  updateProgressScrollComponent(numDone, numDoneCount);
-
-  const numTotalCount = +numTotal.textContent;
-  const numDoingCount = +progressBar.dataset['numdoing'];
-  updateProgressScrollComponent(progressBar, calculateProgressBarContent(numDoneCount, numTotalCount, numDoingCount));
-}
-
-function incrementNumTotal(decrement=false) {
-
-}
-
-function incrementNumDoing(decrement=false) {
-  let numDoingCount = +progressBar.dataset['numdoing'];
-  numDoingCount = (decrement) ? numDoingCount - 1 : numDoingCount + 1;
-  progressBar.dataset.numdoing = numDoingCount;
-
-  const numTotalCount = +numTotal.textContent;
-  const numDoneCount = +numDone.textContent; 
-  updateProgressScrollComponent(progressBar, calculateProgressBarContent(numDoneCount, numTotalCount, numDoingCount));
 }
 
 // Rollup Effect //
