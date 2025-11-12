@@ -351,9 +351,8 @@ function closeModal(modal) {
   overlay.classList.remove('show');
   setTimeout(() => {
     modal.close();
+    activeArea = 'BODY';
   }, 0.5 * 1000);
-
-  activeArea = 'BODY';
 }
 
 addTodo.addEventListener('click', () => {
@@ -580,6 +579,7 @@ window.addEventListener('click', (e) => {
 // Selecting with Enters and Spaces //
 
 window.addEventListener('keyup', (e) => {
+  if (activeArea === 'MODAL') return;
   if (e.key === 'Enter' || e.key === ' ') {
     e.preventDefault();
     document.activeElement.click();
