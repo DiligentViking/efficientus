@@ -616,14 +616,19 @@ main {
   transform: translate(0, 0.0625rem);
 }
 
-.datetimedue > span {
+.datetimedue {
+  width: 4.34375rem;
+  margin-right: 1rem;
+}
+
+.datetimedue.anytime > span {
   -webkit-mask: url('../assets/images/clock-svgrepo-com.svg') no-repeat center / contain;
   mask: url('../assets/images/clock-svgrepo-com.svg') no-repeat center / contain;
 }
 
-.datetimedue {
-  width: 4.34375rem;
-  margin-right: 1rem;
+.datetimedue.anyday > span {
+  -webkit-mask: url('../assets/images/calendar-day-svgrepo-com.svg') no-repeat center / contain;
+  mask: url('../assets/images/calendar-day-svgrepo-com.svg') no-repeat center / contain;
 }
 
 .linked-list {
@@ -695,7 +700,7 @@ main {
 }
 
 
-/* Modals */
+/* Todo Modal */
 
 #new-todo-modal {
   background: inherit;
@@ -782,6 +787,15 @@ main {
   background-color: rgb(80, 50, 25);
   color: rgb(240, 194, 135);
   cursor: pointer;
+}
+
+
+/* Time Modal */
+
+#time-modal {
+  position: absolute;
+  outline: 2px solid red;
+  z-index: 1;
 }
 
 

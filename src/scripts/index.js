@@ -65,6 +65,9 @@ const addTodo = document.querySelector('.add-todo');
 const newTodoModal = document.querySelector('#new-todo-modal');
 const newTodoForm = document.querySelector('#new-todo-form');
 
+const timeModal = document.querySelector('#time-modal');
+const dateModal = document.querySelector('#date-modal');
+
 let appLoad = true;
 
 
@@ -235,8 +238,13 @@ function renderTodo(todoData, create=false) {
     datetimedue.classList.add('scheduled');
     datetimedueText = todoData.datetimedue;
   } else {
-    datetimedue.classList.add('anytime');
-    datetimedueText = 'Anytime';
+    if (currentPlace === 'Today') {  // Revise!!
+      datetimedue.classList.add('anytime');
+      datetimedueText = 'Anytime';
+    } else {
+      datetimedue.classList.add('anyday');
+      datetimedueText = 'Anyday';
+    }
   }
   datetimedue.append(datetimedueIcon, datetimedueText);
 
@@ -341,6 +349,11 @@ todoWrapper.addEventListener('click', (e) => {
           updateTodoPriority(priorityTodoID, 2);
           break;
       }
+      break;
+    case 'datetimedue':
+      const datetimedueCoords = e.target.getBoundingClientRect().bottom + window.scrollY;  // delightful
+
+      timeModal.style.top = `${datetimedueCoords}px`;
   }
 });
 
