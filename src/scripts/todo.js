@@ -33,6 +33,11 @@ const readAllTodos = (list, todos=getTodos()) => {
 }
 
 
+const getLastTodoIndex = (todos=getTodos()) => {
+  return todos.length - 1;
+}
+
+
 const updateTodo = (todoId, prop, val, todos=getTodos()) => {  // This should not really be used because it doesn't have a crisp purpose
   todos[todoId][prop] = val;
 
@@ -84,4 +89,4 @@ const deleteTodo = (todoId, trash=true, todos=getTodos()) => {
 }
 
 
-export { createTodo, readAllTodos, markTodoAsDone, markTodoAsNotDone, updateTodoPriority, linkTodoToToday, unlinkTodoFromToday, deleteTodo };
+export { createTodo, readAllTodos, getLastTodoIndex, markTodoAsDone, markTodoAsNotDone, updateTodoPriority, linkTodoToToday, unlinkTodoFromToday, deleteTodo };

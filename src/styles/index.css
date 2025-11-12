@@ -51,7 +51,7 @@ img {
 :focus-visible {
   outline: none;
   box-shadow: 0 0 0 1px rgb(40, 25, 15);
-  transition: box-shadow 0.25s ease;  /* doesn't work */
+  /* transition: box-shadow 0.25s ease;  /* doesn't work */
 }
 
 .checkbox:focus-visible {
@@ -74,7 +74,7 @@ img {
 
 .overlay {
   background-color: rgb(0, 0, 0, 0.5);
-  position: absolute;
+  position: fixed;
   inset: 0;
   z-index: 1;
   opacity: 0;
@@ -111,7 +111,7 @@ body {
   padding: 1rem;
   width: 13.875rem;
   height: 100%;
-  position: absolute;
+  position: fixed;
   z-index: 1;
   transition: opacity 0.5s ease;
 }
@@ -253,6 +253,7 @@ main {
 }
 
 .content {
+  padding-bottom: 4rem;
   margin: auto;
   margin-top: 5.625rem;
   max-width: 63.125rem;
@@ -441,6 +442,21 @@ main {
   border: 1px solid rgb(80, 50, 25, 1);
 }
 
+.todo.create {
+  animation: createTodo 0.5s ease;
+}
+
+@keyframes createTodo {
+  0% {
+    opacity: 0;
+    translate: 0 -1rem;
+  }
+  100% {
+    opacity: 1;
+    translate: 0 0rem;
+  }
+}
+
 .checkbox {
   appearance: none;
   background: none;
@@ -627,9 +643,10 @@ main {
   border-radius: 50%;
   width: 2rem;
   height: 2rem;
-  margin-top: 1.75rem;
+  margin-top: 0.75rem;
+  position: absolute !important;
   transform: translate(-0.75rem);
-  transition: background-color 0.25s ease, opacity 0.25s ease;
+  transition: background-color 0.25s ease, opacity 0.25s ease, translate 0.5s ease;
   /* transition: border .25s ease; */
 }
 
@@ -652,6 +669,10 @@ main {
 .add-todo:hover > svg {
   color: rgb(240, 194, 135, 1);
   /* color: rgb(80, 50, 25) */
+}
+
+.add-todo:focus {
+  box-shadow: none;
 }
 
 

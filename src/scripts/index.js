@@ -2,14 +2,14 @@ import '../styles/index.css';
 import scrollImg from '../assets/images/scroll-outline.svg';
 
 import { createProfile, createList, readLists } from './storage.js';
-import { createTodo, readAllTodos, markTodoAsDone, markTodoAsNotDone, updateTodoPriority, linkTodoToToday, unlinkTodoFromToday, deleteTodo } from './todo.js';
+import { createTodo, readAllTodos, getLastTodoIndex, markTodoAsDone, markTodoAsNotDone, updateTodoPriority, linkTodoToToday, unlinkTodoFromToday, deleteTodo } from './todo.js';
 
 
 /* Initial Population */
 
 // localStorage.clear();  // Devving
 
-if (!createProfile()) { 
+if (!createProfile()) {
   createList('Today');
   createList('Odin Project');
   createList('Appointments');
@@ -56,9 +56,13 @@ const todoWrapper = contentArea.querySelector('.todo-wrapper');
 const numDone = progressScroll.querySelector('.num-done');
 const numTotal = progressScroll.querySelector('.num-total');
 const progressBar = progressScroll.querySelector('.progress-bar');
+let numDoneCount = 0;
+let numTotalCount = 0;
+let numDoingCount = 0;
 
 const addTodo = document.querySelector('.add-todo');
 const newTodoModal = document.querySelector('#new-todo-modal');
+const newTodoForm = document.querySelector('#new-todo-form');
 
 let appLoad = true;
 
@@ -97,7 +101,7 @@ sidebarMenu.addEventListener('click', (e) => {
     
     // Effects and Rendering //
     if (appLoad) {
-      renderTodoListDOM(dataList);
+      renderTodoListDOM();
       appLoad = false;
       return;
     }
@@ -122,123 +126,23 @@ sidebarMenu.querySelector('.sidebar-item.today').click();
 
 /* Todo Rendering */
 
-function renderTodoListDOM(list) {
+function renderTodoListDOM() {
   // Title //
-  contentTitle.textContent = list;
+  contentTitle.textContent = currentPlace;
 
   // Progress-scroll (1) //
-  let numDoneCount = 0;
-  let numTotalCount = 0;
-  let numDoingCount = 0;
+
+  numDoneCount = 0;
+  numTotalCount = 0;
+  numDoingCount = 0;
 
   // Todos //
   todoWrapper.textContent = '';
 
-  const todoArray = readAllTodos(list);
+  const todoArray = readAllTodos(currentPlace);
 
   for (const todoData of todoArray) {
-    const todoElem = document.createElement('div');
-    todoElem.classList.add('todo');
-    todoElem.dataset.todoid = todoData.todoID;
-
-    const checkbox = document.createElement('input');
-    checkbox.classList.add('checkbox');
-    checkbox.setAttribute('type', 'checkbox');
-    checkbox.setAttribute('tabindex', '0');
-    checkbox.dataset.todoid = todoData.todoID;
-    if (todoData.isDone === 1) {
-      checkbox.classList.add('done');
-      if (list !== 'Today') {
-        checkbox.classList.add('no-hover');
-      }
-      numDoneCount++;
-    } else if (list !== 'Today' && todoData.lists.length == 2) {  // A lil non-SRP. Also, I'll have to change this when I have templates in addition to custom lists.
-      checkbox.classList.add('doing');
-      numDoingCount++;
-    }
-
-    todoElem.appendChild(checkbox);
-
-    const stackGroup = document.createElement('div');
-    stackGroup.classList.add('stack-group');
-
-    const rowGroup1 = document.createElement('div');
-    rowGroup1.classList.add('row-group', 'one');
-
-    const description = document.createElement('p');
-    description.classList.add('description');
-    description.textContent = todoData.description;
-
-    const notes = document.createElement('p');
-    notes.classList.add('notes');
-    notes.textContent = todoData.notes;
-
-    rowGroup1.append(description, notes);
-
-    stackGroup.appendChild(rowGroup1);
-
-    const rowGroup2 = document.createElement('div');
-    rowGroup2.classList.add('row-group', 'two');
-
-    const priority = document.createElement('button');
-    priority.classList.add('priority');
-    priority.setAttribute('tabindex', '0');
-    priority.dataset.todoid = todoData.todoID;
-    const priorityIcon = document.createElement('span');
-    let priorityText;
-    switch (todoData.priority) {
-      case 1:
-        priority.classList.add('low');
-        priorityText = 'Low';
-        break;
-      case 2:
-        priority.classList.add('normal');
-        priorityText = 'Normal';
-        break;
-      case 3:
-        priority.classList.add('high');
-        priorityText = 'High';
-        break;
-    }
-    priority.append(priorityIcon, priorityText);
-
-    rowGroup2.appendChild(priority);
-
-    const datetimedue = document.createElement('button');
-    datetimedue.classList.add('datetimedue');
-    datetimedue.setAttribute('tabindex', '0');
-    datetimedue.dataset.todoid = todoData.todoID;
-    const datetimedueIcon = document.createElement('span');
-    let datetimedueText;
-    if (todoData.datetimedue) {
-      datetimedue.classList.add('scheduled');
-      datetimedueText = todoData.datetimedue;
-    } else {
-      datetimedue.classList.add('anytime');
-      datetimedueText = 'Anytime';
-    }
-    datetimedue.append(datetimedueIcon, datetimedueText);
-
-    rowGroup2.appendChild(datetimedue);
-
-    if (list === 'Today' && todoData.lists.length == 2) {
-      const linkedList = document.createElement('button');
-      linkedList.classList.add('linked-list');
-      linkedList.title = 'source: ' + todoData.lists[1];
-      const linkedListIcon = document.createElement('img');
-      linkedListIcon.src = scrollImg;
-      linkedList.appendChild(linkedListIcon);
-
-      rowGroup2.appendChild(linkedList);
-    }
-
-    stackGroup.appendChild(rowGroup2);
-
-    todoElem.appendChild(stackGroup);
-
-    todoWrapper.appendChild(todoElem);
-
-    numTotalCount++;
+    renderTodo(todoData);
   }
 
   // Progress-scroll (2) //
@@ -248,6 +152,112 @@ function renderTodoListDOM(list) {
 
   updateProgressScrollComponent(progressBar, calculateProgressBarContent(numDoneCount, numTotalCount, numDoingCount));
   progressBar.dataset.numdoing = numDoingCount;
+}
+
+function renderTodo(todoData, create=false) {
+  const todoElem = document.createElement('div');
+  todoElem.classList.add('todo');
+  if (create) todoElem.classList.add('create');
+  todoElem.dataset.todoid = todoData.todoID;
+
+  const checkbox = document.createElement('input');
+  checkbox.classList.add('checkbox');
+  checkbox.setAttribute('type', 'checkbox');
+  checkbox.setAttribute('tabindex', '0');
+  checkbox.dataset.todoid = todoData.todoID;
+  if (todoData.isDone === 1) {
+    checkbox.classList.add('done');
+    if (currentPlace !== 'Today') {
+      checkbox.classList.add('no-hover');
+    }
+    numDoneCount++;
+  } else if (currentPlace !== 'Today' && todoData.lists.length == 2) {  // A lil non-SRP. Also, I'll have to change this when I have templates in addition to custom lists.
+    checkbox.classList.add('doing');
+    numDoingCount++;
+  }
+
+  todoElem.appendChild(checkbox);
+
+  const stackGroup = document.createElement('div');
+  stackGroup.classList.add('stack-group');
+
+  const rowGroup1 = document.createElement('div');
+  rowGroup1.classList.add('row-group', 'one');
+
+  const description = document.createElement('p');
+  description.classList.add('description');
+  description.textContent = todoData.description;
+
+  const notes = document.createElement('p');
+  notes.classList.add('notes');
+  notes.textContent = todoData.notes;
+
+  rowGroup1.append(description, notes);
+
+  stackGroup.appendChild(rowGroup1);
+
+  const rowGroup2 = document.createElement('div');
+  rowGroup2.classList.add('row-group', 'two');
+
+  const priority = document.createElement('button');
+  priority.classList.add('priority');
+  priority.setAttribute('tabindex', '0');
+  priority.dataset.todoid = todoData.todoID;
+  const priorityIcon = document.createElement('span');
+  let priorityText;
+  switch (todoData.priority) {
+    case 1:
+      priority.classList.add('low');
+      priorityText = 'Low';
+      break;
+    case 2:
+      priority.classList.add('normal');
+      priorityText = 'Normal';
+      break;
+    case 3:
+      priority.classList.add('high');
+      priorityText = 'High';
+      break;
+  }
+  priority.append(priorityIcon, priorityText);
+
+  rowGroup2.appendChild(priority);
+
+  const datetimedue = document.createElement('button');
+  datetimedue.classList.add('datetimedue');
+  datetimedue.setAttribute('tabindex', '0');
+  datetimedue.dataset.todoid = todoData.todoID;
+  const datetimedueIcon = document.createElement('span');
+  let datetimedueText;
+  if (todoData.datetimedue) {
+    datetimedue.classList.add('scheduled');
+    datetimedueText = todoData.datetimedue;
+  } else {
+    datetimedue.classList.add('anytime');
+    datetimedueText = 'Anytime';
+  }
+  datetimedue.append(datetimedueIcon, datetimedueText);
+
+  rowGroup2.appendChild(datetimedue);
+
+  if (currentPlace === 'Today' && todoData.lists.length == 2) {
+    const linkedList = document.createElement('button');
+    linkedList.classList.add('linked-list');
+    linkedList.title = 'source: ' + todoData.lists[1];
+    const linkedListIcon = document.createElement('img');
+    linkedListIcon.src = scrollImg;
+    linkedList.appendChild(linkedListIcon);
+
+    rowGroup2.appendChild(linkedList);
+  }
+
+  stackGroup.appendChild(rowGroup2);
+
+  todoElem.appendChild(stackGroup);
+
+  todoWrapper.appendChild(todoElem);
+
+  numTotalCount++;
 }
 
 
@@ -335,6 +345,16 @@ todoWrapper.addEventListener('click', (e) => {
 
 /* Todo Creation */
 
+function closeModal(modal) {
+  modal.classList.remove('open');
+  overlay.classList.remove('show');
+  setTimeout(() => {
+    modal.close();
+  }, 0.5 * 1000);
+
+  activeArea = 'BODY';
+}
+
 addTodo.addEventListener('click', () => {
   newTodoModal.showModal();
   newTodoModal.classList.add('open');
@@ -346,13 +366,41 @@ addTodo.addEventListener('click', () => {
 
 newTodoModal.addEventListener('cancel', (e) => {
   e.preventDefault();
-  newTodoModal.classList.remove('open');
-  overlay.classList.remove('show');
-  setTimeout(() => {
-    newTodoModal.close();
-  }, 0.5 * 1000);
+  closeModal(newTodoModal);
+});
 
-  activeArea = 'BODY';
+newTodoForm.addEventListener('submit', (e) => {
+  e.preventDefault();
+
+  const todoData = {
+    lists: [currentPlace],
+    description: newTodoForm.querySelector('#title').value,
+    notes: newTodoForm.querySelector('#notes').value,
+    datetimedue: null,
+    priority: 2
+  };
+
+  createTodo(...Object.values(todoData));
+
+  todoData['todoID'] = getLastTodoIndex();
+
+  closeModal(newTodoModal);
+
+  setTimeout(() => {
+    renderTodo(todoData, currentPlace, true);
+
+    let addTodoTranslationEffect = (addTodo.style.translate !== "0px") ?
+      +addTodo.style.translate.slice(2, 6) :
+      0;
+    addTodoTranslationEffect = addTodoTranslationEffect + 5.25;
+    addTodo.style.translate = `0 ${addTodoTranslationEffect}rem`;
+    console.log(addTodo.style.translate);
+  }, 0.25 * 1000);
+
+  setTimeout(() => {
+    newTodoForm.querySelector('#title').value = '';
+    newTodoForm.querySelector('#notes').value = '';
+  }, 0.5 * 1000);
 });
 
 
@@ -464,6 +512,7 @@ window.addEventListener('keydown', (e) => {
           sidebar.querySelector('.today').focus();
           break;
         case 'SIDEBAR':
+          e.preventDefault();
           moveToNextTabIndex(sidebar);
           break;
         case 'CONTENT':
@@ -483,6 +532,7 @@ window.addEventListener('keydown', (e) => {
           sidebar.querySelector('.today').focus();
           break;
         case 'SIDEBAR':
+          e.preventDefault();
           moveToNextTabIndex(sidebar, -1);
           break;
         case 'CONTENT':
@@ -518,6 +568,9 @@ window.addEventListener('keydown', (e) => {
       }
       break;
     case 'Enter':
+      e.preventDefault();
+      break;
+    case ' ':
       e.preventDefault();
       break;
   }
@@ -565,6 +618,6 @@ function toggleMobileSidebarOpen() {
 const textarea = document.querySelector('textarea');
 
 textarea.addEventListener('input', () => {
-    textarea.style.height = 'auto'; // Reset height
-    textarea.style.height = `${textarea.scrollHeight}px`; // Set height to match scroll height
+  textarea.style.height = 'auto';
+  textarea.style.height = `${textarea.scrollHeight}px`;
 });
