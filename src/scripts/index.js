@@ -39,6 +39,7 @@ console.table(readAllTodos());
 let currentPlace;
 
 let activeArea = document.activeElement.tagName;
+let keyboardFocusedTodo;
 
 const listsArray = readLists();
 
@@ -482,10 +483,13 @@ window.addEventListener('keydown', (e) => {
       switch (activeArea) {
         case 'SIDEBAR':
           activeArea = 'CONTENT';
-          contentArea.querySelector('.checkbox').focus();
+          keyboardFocusedTodo = contentArea.querySelector('.todo');
+          keyboardFocusedTodo.classList.add('keyboard-hover');
+          keyboardFocusedTodo.querySelector('.checkbox').focus();
           break;
         case 'CONTENT':
           activeArea = 'SIDEBAR';
+          keyboardFocusedTodo.classList.remove('keyboard-hover');
           sidebar.querySelector('.today').focus();
           break;
         default:
@@ -505,10 +509,13 @@ window.addEventListener('keydown', (e) => {
           break;
         case 'CONTENT':
           const todoID = +document.activeElement.dataset.todoid;
-          const todo = contentArea.querySelector(`.todo[data-todoid="${todoID}"]`);
-          const nextTodo = todo.nextSibling;
+          keyboardFocusedTodo = contentArea.querySelector(`.todo[data-todoid="${todoID}"]`);
+          const nextTodo = keyboardFocusedTodo.nextSibling;
           if (nextTodo) {
+            keyboardFocusedTodo.classList.remove('keyboard-hover');
             nextTodo.querySelector('.checkbox').focus();
+            nextTodo.classList.add('keyboard-hover');
+            keyboardFocusedTodo = nextTodo;
           }
           break;
       }
@@ -525,10 +532,13 @@ window.addEventListener('keydown', (e) => {
           break;
         case 'CONTENT':
           const todoID = +document.activeElement.dataset.todoid;
-          const todo = contentArea.querySelector(`.todo[data-todoid="${todoID}"]`);
-          const prevTodo = todo.previousSibling;  // Only difference from ArrowDown version
+          keyboardFocusedTodo = contentArea.querySelector(`.todo[data-todoid="${todoID}"]`);
+          const prevTodo = keyboardFocusedTodo.previousSibling;  // Only difference from ArrowDown version
           if (prevTodo) {
+            keyboardFocusedTodo.classList.remove('keyboard-hover');
             prevTodo.querySelector('.checkbox').focus();
+            prevTodo.classList.add('keyboard-hover');
+            keyboardFocusedTodo = prevTodo;
           }
           break;
       }
@@ -573,6 +583,9 @@ window.addEventListener('click', (e) => {
   } else {
     if (e.target.getAttribute('tabindex')) return;
     activeArea = 'BODY';
+    if (keyboardFocusedTodo) {
+      keyboardFocusedTodo.classList.remove('keyboard-hover');
+    }
   }
 });
 

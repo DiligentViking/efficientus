@@ -57,7 +57,12 @@ img {
 .checkbox:focus-visible {
   box-shadow:
     0 0 0 3px rgb(240, 194, 135, 1),
-    0 0 0 4px rgb(40, 25, 15);
+    0 0 0 4px rgb(40, 25, 15, 0.5);
+  /* box-shadow: none; */
+}
+.priority:focus-visible,
+.datetimedue:focus-visible {
+  box-shadow: 0 0 0 1px rgb(40, 25, 15, 0.5);
 }
 
 .no-hover {
@@ -438,7 +443,8 @@ main {
   will-change: max-width;
 }
 
-.todo:hover {
+.todo:hover,
+.todo.keyboard-hover {
   border: 1px solid rgb(80, 50, 25, 1);
 }
 
