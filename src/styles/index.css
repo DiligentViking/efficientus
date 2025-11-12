@@ -646,8 +646,21 @@ main {
   margin-top: 0.75rem;
   position: absolute !important;
   transform: translate(-0.75rem);
-  transition: background-color 0.25s ease, opacity 0.25s ease, translate 0.5s ease;
+  transition: background-color 0.25s ease, opacity 0.25s ease;
   /* transition: border .25s ease; */
+}
+
+.add-todo.push-down {
+  animation: pushDown 0.5s ease;
+}
+
+@keyframes pushDown {
+  0% {
+    translate: 0 -5.25rem;
+  }
+  100% {
+    translate: 0 0rem;
+  }
 }
 
 .add-todo > svg {

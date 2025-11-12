@@ -7,7 +7,7 @@ import { createTodo, readAllTodos, getLastTodoIndex, markTodoAsDone, markTodoAsN
 
 /* Initial Population */
 
-// localStorage.clear();  // Devving
+localStorage.clear();  // Devving
 
 if (!createProfile()) {
   createList('Today');
@@ -389,15 +389,12 @@ newTodoForm.addEventListener('submit', (e) => {
   setTimeout(() => {
     renderTodo(todoData, currentPlace, true);
 
-    let addTodoTranslationEffect = (addTodo.style.translate !== "0px") ?
-      +addTodo.style.translate.slice(2, 6) :
-      0;
-    addTodoTranslationEffect = addTodoTranslationEffect + 5.25;
-    addTodo.style.translate = `0 ${addTodoTranslationEffect}rem`;
-    console.log(addTodo.style.translate);
-  }, 0.25 * 1000);
+    addTodo.classList.add('push-down');
+  }, 0.00 * 1000);
 
   setTimeout(() => {
+    addTodo.classList.remove('push-down');
+
     newTodoForm.querySelector('#title').value = '';
     newTodoForm.querySelector('#notes').value = '';
   }, 0.5 * 1000);
