@@ -352,9 +352,15 @@ todoWrapper.addEventListener('click', (e) => {
       }
       break;
     case 'datetimedue':
-      const datetimedueCoords = e.target.getBoundingClientRect().bottom + window.scrollY;  // delightful
+      const datetimedueTodoID = e.target.dataset.todoid;
+      timeModal.dataset.todoid = datetimedueTodoID;
 
-      timeModal.style.top = `${datetimedueCoords}px`;
+      const datetimedueCoords = e.target.getBoundingClientRect();  // delightful
+
+      timeModal.style.top = `${datetimedueCoords.bottom + window.scrollY}px`;
+      timeModal.style.left = `${datetimedueCoords.left}px`;
+
+      openModal(timeModal);
   }
 });
 
@@ -365,16 +371,34 @@ function openModal(modal) {
   modal.showModal();
   modal.classList.add('open');
   overlay.classList.add('show');
+  const editTodoDatetimedue = modal.dataset.todoid;
+  if (editTodoDatetimedue) {
+    overlay.classList.add('weak');
+    const datetimedueTodo = todoWrapper.querySelector(`.todo[data-todoid="${editTodoDatetimedue}"]`)
+    datetimedueTodo.classList.add('edit-todo-datetimedue');
+    if (keyboardFocusedTodo) {
+      keyboardFocusedTodo.classList.remove('keyboard-hover');
+    }
+  }
   activeArea = 'MODAL';
 }
 
 function closeModal(modal) {
   modal.classList.remove('open');
   overlay.classList.remove('show');
+  const editTodoDatetimedue = modal.dataset.todoid;
+  const delay = (editTodoDatetimedue) ? 0.25 : 0.5;
   setTimeout(() => {
     modal.close();
+    if (editTodoDatetimedue) {
+      const datetimedueTodo = todoWrapper.querySelector(`.todo[data-todoid="${editTodoDatetimedue}"]`);
+      datetimedueTodo.classList.remove('edit-todo-datetimedue');
+      datetimedueTodo.classList.add('keyboard-hover');
+      keyboardFocusedTodo = datetimedueTodo;
+      overlay.classList.remove('weak');
+    }
     activeArea = 'CONTENT';
-  }, 0.5 * 1000);
+  }, delay * 1000);
 }
 
 addTodo.addEventListener('click', () => {
@@ -384,6 +408,11 @@ addTodo.addEventListener('click', () => {
 newTodoModal.addEventListener('cancel', (e) => {
   e.preventDefault();
   closeModal(newTodoModal);
+});
+timeModal.addEventListener('cancel', (e) => {
+  e.preventDefault();
+  console.log({activeElem: document.activeElement});
+  closeModal(timeModal);
 });
 
 newTodoForm.addEventListener('submit', (e) => {

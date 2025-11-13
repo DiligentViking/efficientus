@@ -93,6 +93,11 @@ img {
   transition: opacity 0.5s ease;
 }
 
+.overlay.weak {
+  background-color: rgb(0, 0, 0, 0.125);
+  transition: opacity 0.25s ease, visibility 0.25s;
+}
+
 dialog::backdrop {
   visibility: hidden;
 }
@@ -429,6 +434,7 @@ main {
 /* Todos */
 
 .todo {
+  background-color: rgb(240, 194, 135, 1);
   border: 1px solid rgb(80, 50, 25, 0.5);
   border-radius: 1rem;
   box-shadow: 2px 2px 4px rgb(0, 0, 0, 0.2);
@@ -436,7 +442,8 @@ main {
   padding-bottom: 0.5rem;
   max-width: 43.75rem;
   margin-bottom: 1rem;
-  transform: translate(-0.75rem);
+  /* transform: translate(-0.75rem); */
+  margin-left: -0.75rem;
   display: flex;
   /* align-items: center; */
   transition: border 0.25s ease, max-width 0.5s ease;
@@ -444,8 +451,14 @@ main {
 }
 
 .todo:hover,
-.todo.keyboard-hover {
+.todo.keyboard-hover,
+.todo.edit-todo-datetimedue {
   border: 1px solid rgb(80, 50, 25, 1);
+}
+
+.todo.edit-todo-datetimedue {
+  position: relative;
+  z-index: 100;
 }
 
 .todo.create {
@@ -794,8 +807,6 @@ main {
 
 #time-modal {
   position: absolute;
-  outline: 2px solid red;
-  z-index: 1;
 }
 
 
