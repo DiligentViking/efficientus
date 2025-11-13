@@ -38,9 +38,9 @@ console.table(readAllTodos());
 
 let currentPlace;
 
-let activeArea = document.activeElement.tagName;
 let keyboardFocusedTodo;
-let focusedTodoElem;
+let activeArea = document.activeElement.tagName;
+let activeModal;
 
 const listsArray = readLists();
 
@@ -235,16 +235,19 @@ function renderTodo(todoData, create=false) {
   datetimedue.dataset.todoid = todoData.todoID;
   const datetimedueIcon = document.createElement('span');
   let datetimedueText;
-  if (todoData.datetimedue) {
-    datetimedue.classList.add('scheduled');
-    datetimedueText = todoData.datetimedue;
+  if (currentPlace === 'Today') {
+    datetimedue.classList.add('anytime');
+    datetimedueText = 'Anytime';
+    if (todoData.datetimedue) {
+      datetimedue.classList.add('scheduled');
+      datetimedueText = todoData.datetimedue;
+    }
   } else {
-    if (currentPlace === 'Today') {  // Revise!!
-      datetimedue.classList.add('anytime');
-      datetimedueText = 'Anytime';
-    } else {
-      datetimedue.classList.add('anyday');
-      datetimedueText = 'Anyday';
+    datetimedue.classList.add('anyday');
+    datetimedueText = 'Anyday';
+    if (todoData.datetimedue) {
+      datetimedue.classList.add('scheduled');
+      datetimedueText = todoData.datetimedue;
     }
   }
   datetimedue.append(datetimedueIcon, datetimedueText);
@@ -275,7 +278,6 @@ function renderTodo(todoData, create=false) {
 /* Todo Selection & Updation */
 
 todoWrapper.addEventListener('click', (e) => {
-  console.log('selected item\'s class: ' + e.target.classList[0]);
   switch (e.target.classList[0]) {
     case 'checkbox':
       const checkboxTodoID = e.target.dataset.todoid;
@@ -381,6 +383,7 @@ function openModal(modal) {
     }
   }
   activeArea = 'MODAL';
+  activeModal = modal;
 }
 
 function closeModal(modal) {
@@ -398,6 +401,7 @@ function closeModal(modal) {
       overlay.classList.remove('weak');
     }
     activeArea = 'CONTENT';
+    activeModal = null;
   }, delay * 1000);
 }
 
@@ -413,6 +417,12 @@ timeModal.addEventListener('cancel', (e) => {
   e.preventDefault();
   console.log({activeElem: document.activeElement});
   closeModal(timeModal);
+});
+
+window.addEventListener('click', (e) => {
+  if (e.target.tagName === 'HTML' && activeModal) {
+    closeModal(activeModal);
+  }
 });
 
 newTodoForm.addEventListener('submit', (e) => {
@@ -507,9 +517,6 @@ progressScroll.querySelector('.scroll-decor-container').addEventListener('click'
 function resetKeyboardFocus() {
   activeArea = 'BODY';
   document.body.focus();
-  if (keyboardFocusedTodo) {
-    keyboardFocusedTodo.classList.remove('keyboard-hover');
-  }
 }
 
 function moveToNextTabIndex(areaNode, moveBy=1) {
@@ -628,9 +635,12 @@ window.addEventListener('keydown', (e) => {
       break;
     case 'Escape':
       resetKeyboardFocus();
+      if (keyboardFocusedTodo) {
+        keyboardFocusedTodo.classList.remove('keyboard-hover');
+      }
       break;
     // Keyboard Shortcuts //
-    case 'N':
+    case 'T':
       e.preventDefault();
       openModal(newTodoModal);
       break;
@@ -646,6 +656,9 @@ window.addEventListener('click', (e) => {
   } else {
     if (e.target.getAttribute('tabindex')) return;
     resetKeyboardFocus();
+  }
+  if (keyboardFocusedTodo) {
+    keyboardFocusedTodo.classList.remove('keyboard-hover');
   }
 });
 
