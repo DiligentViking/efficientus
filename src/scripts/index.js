@@ -40,6 +40,7 @@ let currentPlace;
 
 let activeArea = document.activeElement.tagName;
 let keyboardFocusedTodo;
+let focusedTodoElem;
 
 const listsArray = readLists();
 
@@ -360,22 +361,24 @@ todoWrapper.addEventListener('click', (e) => {
 
 /* Todo Creation */
 
+function openModal(modal) {
+  modal.showModal();
+  modal.classList.add('open');
+  overlay.classList.add('show');
+  activeArea = 'MODAL';
+}
+
 function closeModal(modal) {
   modal.classList.remove('open');
   overlay.classList.remove('show');
   setTimeout(() => {
     modal.close();
-    activeArea = 'BODY';
+    activeArea = 'CONTENT';
   }, 0.5 * 1000);
 }
 
 addTodo.addEventListener('click', () => {
-  newTodoModal.showModal();
-  newTodoModal.classList.add('open');
-  overlay.classList.add('show');
-
-  activeArea = 'MODAL';
-  console.log('modal opening');
+  openModal(newTodoModal);
 });
 
 newTodoModal.addEventListener('cancel', (e) => {
@@ -472,6 +475,14 @@ progressScroll.querySelector('.scroll-decor-container').addEventListener('click'
 
 // Moving with Tabs and Arrows //
 
+function resetKeyboardFocus() {
+  activeArea = 'BODY';
+  document.body.focus();
+  if (keyboardFocusedTodo) {
+    keyboardFocusedTodo.classList.remove('keyboard-hover');
+  }
+}
+
 function moveToNextTabIndex(areaNode, moveBy=1) {
   const allTabbableElems = areaNode.querySelectorAll('[tabindex="0"]');
 
@@ -526,7 +537,8 @@ window.addEventListener('keydown', (e) => {
           const nextTodo = keyboardFocusedTodo.nextSibling;
           if (nextTodo) {
             keyboardFocusedTodo.classList.remove('keyboard-hover');
-            nextTodo.querySelector('.checkbox').focus();
+            const focusedTodoElem = document.activeElement.classList[0];
+            nextTodo.querySelector(`.${focusedTodoElem}`).focus();
             nextTodo.classList.add('keyboard-hover');
             keyboardFocusedTodo = nextTodo;
           }
@@ -549,7 +561,8 @@ window.addEventListener('keydown', (e) => {
           const prevTodo = keyboardFocusedTodo.previousSibling;  // Only difference from ArrowDown version
           if (prevTodo) {
             keyboardFocusedTodo.classList.remove('keyboard-hover');
-            prevTodo.querySelector('.checkbox').focus();
+            const focusedTodoElem = document.activeElement.classList[0];
+            prevTodo.querySelector(`.${focusedTodoElem}`).focus();
             prevTodo.classList.add('keyboard-hover');
             keyboardFocusedTodo = prevTodo;
           }
@@ -584,7 +597,15 @@ window.addEventListener('keydown', (e) => {
     case ' ':
       e.preventDefault();
       break;
-  }
+    case 'Escape':
+      resetKeyboardFocus();
+      break;
+    // Keyboard Shortcuts //
+    case 'N':
+      e.preventDefault();
+      openModal(newTodoModal);
+      break;
+    }
 });
 
 window.addEventListener('click', (e) => {
@@ -595,17 +616,26 @@ window.addEventListener('click', (e) => {
     activeArea = 'CONTENT';
   } else {
     if (e.target.getAttribute('tabindex')) return;
-    activeArea = 'BODY';
-    if (keyboardFocusedTodo) {
-      keyboardFocusedTodo.classList.remove('keyboard-hover');
-    }
+    resetKeyboardFocus();
   }
 });
 
-// Selecting with Enters and Spaces //
-
 window.addEventListener('keyup', (e) => {
-  if (activeArea === 'MODAL') return;
+  if (activeArea === 'MODAL') {
+    if (e.key === 'Enter') {
+      setTimeout(() => {
+        const createdTodo = todoWrapper.querySelector('.todo:last-child');
+        createdTodo.querySelector('.checkbox').focus();
+        moveToNextTabIndex(createdTodo);
+        createdTodo.classList.add('keyboard-hover');
+        if (keyboardFocusedTodo) {
+          keyboardFocusedTodo.classList.remove('keyboard-hover');
+        }
+        keyboardFocusedTodo = createdTodo;
+      }, 0.5 * 1000);
+    }
+    return;
+  }
   if (e.key === 'Enter' || e.key === ' ') {
     e.preventDefault();
     document.activeElement.click();
