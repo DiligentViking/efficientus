@@ -720,7 +720,8 @@ main {
 
 /* Todo Modal */
 
-#new-todo-modal {
+#new-todo-modal,
+#new-list-modal {
   background-color: rgb(240, 194, 135, 1);
   color: rgb(40, 25, 15);
   outline: none;
@@ -738,13 +739,15 @@ main {
   transition: opacity 0.5s ease, translate 0.5s ease;
 }
 
-#new-todo-modal.open {
+#new-todo-modal.open,
+#new-list-modal.open {
   opacity: 1;
   scale: 1;
   translate: 0;
 }
 
-#new-todo-modal > h2 {
+#new-todo-modal > h2,
+#new-list-modal > h2 {
   font-size: 1.125rem;
   /* border-bottom: 1px solid rgb(120 86 53 / 0.75); */
   padding: 0.25rem 0.75rem 0.25rem 0.75rem;
@@ -788,7 +791,8 @@ main {
   resize: none;
 }
 
-#add-todo {
+#add-todo,
+#create {
   /* background-color: rgb(120 86 53); */
   /* color: rgb(240, 194, 135); */
   color: rgb(40, 25, 15);
@@ -802,7 +806,8 @@ main {
   transition: 0.25s background-color ease, 0.25s color ease;
 }
 
-#add-todo:hover {
+#add-todo:hover,
+#create:hover {
   background-color: rgb(80, 50, 25);
   color: rgb(240, 194, 135);
   cursor: pointer;

@@ -73,12 +73,15 @@ const hour = timeModal.querySelector('#hour');
 const minute = timeModal.querySelector('#minute');
 const meridien = timeModal.querySelector('#meridien');
 
-const dateModal = document.querySelector('#date-modal');
-
 let intervalToClear;
 let nodeToClear;
 
 let modified;
+
+const dateModal = document.querySelector('#date-modal');
+
+const newList = document.querySelector('.new-list');
+const newListModal = document.querySelector('#new-list-modal');
 
 
 /* Sidebar */
@@ -266,6 +269,7 @@ function renderTodo(todoData, create=false) {
   } else {
     datetimedue.classList.add('anyday');
     datetimedueText = 'Anyday';
+    datetimedue.title = 'Not implemented yet  :(';
     if (todoData.datetimedue.month && true == false) {
       datetimedue.classList.add('scheduled');
       datetimedueText = todoData.datetimedue;
@@ -499,11 +503,18 @@ function closeModal(modal) {
 addTodo.addEventListener('click', () => {
   openModal(newTodoModal);
 });
+newList.addEventListener('click', () => {
+  openModal(newListModal);
+});
 
 newTodoModal.addEventListener('cancel', (e) => {
   e.preventDefault();
   closeModal(newTodoModal);
 });
+newListModal.addEventListener('cancel', (e) => {
+  e.preventDefault();
+  closeModal(newListModal);
+})
 timeModal.addEventListener('cancel', (e) => {
   e.preventDefault();
   closeModal(timeModal);
@@ -539,7 +550,7 @@ newTodoForm.addEventListener('submit', (e) => {
     lists: [currentPlace],
     description: newTodoForm.querySelector('#title').value,
     notes: newTodoForm.querySelector('#notes').value,
-    datetimedue: null,
+    datetimedue: {},
     priority: 2
   };
 
@@ -788,6 +799,10 @@ window.addEventListener('keydown', (e) => {
     case 'T':
       e.preventDefault();
       openModal(newTodoModal);
+      break;
+    case 'L':
+      e.preventDefault();
+      openModal(newListModal);
       break;
     }
 });
