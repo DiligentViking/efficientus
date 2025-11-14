@@ -846,10 +846,18 @@ main {
 }
 
 #hour:hover,
-#meridien:hover,
 #minute:hover {
   background-color: rgb(250, 230, 190);
+  cursor: copy;
+}
+#meridien:hover {
+  background-color: rgb(250, 230, 190);
   cursor: pointer;
+}
+
+#hour.progress:active,
+#minute.progress:active {
+  cursor: progress;
 }
 
 #hour::selection,

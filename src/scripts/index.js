@@ -76,6 +76,7 @@ const meridien = timeModal.querySelector('#meridien');
 const dateModal = document.querySelector('#date-modal');
 
 let intervalToClear;
+let nodeToClear;
 
 
 /* Sidebar */
@@ -286,7 +287,11 @@ function renderTodo(todoData, create=false) {
 function incrementTime(node, min, max, increment=1, speed=0.2) {
   node.textContent = +node.textContent + increment;
   if (+node.textContent > max) node.textContent = min;
+  setTimeout(() => {
+    nodeToClear = node;
+  }, speed * 1000);
   intervalToClear = setInterval(() => {
+    node.classList.add('progress');
     node.textContent = +node.textContent + increment;
     if (+node.textContent > max) node.textContent = min;
   }, speed * 1000);
@@ -400,6 +405,7 @@ timeModal.addEventListener('mousedown', (e) => {
 timeModal.addEventListener('mouseup', (e) => {
   clearInterval(intervalToClear);
   intervalToClear = null;
+  nodeToClear?.classList.remove('progress');
 });
 
 
@@ -584,12 +590,13 @@ function focusNewlyCreatedTodo() {
 
 window.addEventListener('keydown', (e) => {
   // console.log({activeArea, activeModal});
-  if (activeModal.id === 'time-modal') {
+  if (activeModal?.id === 'time-modal') {
     if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault();
       if (intervalToClear) {
         clearInterval(intervalToClear);
         intervalToClear = null;
+        nodeToClear?.classList.remove('progress');
         return;
       }
       switch (e.target.id) {
