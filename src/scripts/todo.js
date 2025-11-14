@@ -14,7 +14,7 @@ const createTodo = (lists, description, notes, datetimedue, priority, isDone=nul
   todos.push(todoData);
 
   setTodos(todos);
-}
+};
 
 
 const readAllTodos = (list, todos=getTodos()) => {
@@ -30,19 +30,19 @@ const readAllTodos = (list, todos=getTodos()) => {
   }
 
   return matchingTodos;
-}
+};
 
 
 const getLastTodoIndex = (todos=getTodos()) => {
   return todos.length - 1;
-}
+};
 
 
 const updateTodo = (todoId, prop, val, todos=getTodos()) => {  // This should not really be used because it doesn't have a crisp purpose
   todos[todoId][prop] = val;
 
   setTodos(todos);
-}
+};
 
 
 const markTodoAsDone = (todoID) => {
@@ -51,7 +51,7 @@ const markTodoAsDone = (todoID) => {
 
 const markTodoAsNotDone = (todoID) => {
   updateTodo(todoID, 'isDone', 0);
-}
+};
 
 
 const updateTodoPriority = (todoID, priorityNumber) => {
@@ -60,7 +60,26 @@ const updateTodoPriority = (todoID, priorityNumber) => {
   } else {
     console.log('invalid');
   }
-}
+};
+
+
+const getTodoDatetimedue = (todoID, todos=getTodos()) => {  // the only property we cannot interpret from the DOM [consider changing that tho]
+  return todos[todoID].datetimedue;
+};
+
+
+const updateTodoDatetimedue = (todoID, hour, minute) => {
+  const today = new Date();
+
+  const datetimedue = {
+    month: today.getMonth() + 1,  // to account for Date's 0-indexed months!
+    day: today.getDate(),
+    hour: hour,
+    minute: minute,
+  };
+
+  updateTodo(todoID, 'datetimedue', datetimedue);
+};
 
 
 const linkTodoToToday = (todoID, todos=getTodos()) => {
@@ -69,7 +88,7 @@ const linkTodoToToday = (todoID, todos=getTodos()) => {
   }
 
   setTodos(todos);
-}
+};
 
 const unlinkTodoFromToday = (todoID, todos=getTodos()) => {
   if (todos[todoID].lists[0] === 'Today') {
@@ -77,7 +96,7 @@ const unlinkTodoFromToday = (todoID, todos=getTodos()) => {
   }
 
   setTodos(todos);
-}
+};
 
 
 const deleteTodo = (todoId, trash=true, todos=getTodos()) => {
@@ -86,7 +105,7 @@ const deleteTodo = (todoId, trash=true, todos=getTodos()) => {
 
     setTodos(todos);
   }
-}
+};
 
 
-export { createTodo, readAllTodos, getLastTodoIndex, markTodoAsDone, markTodoAsNotDone, updateTodoPriority, linkTodoToToday, unlinkTodoFromToday, deleteTodo };
+export { createTodo, readAllTodos, getLastTodoIndex, markTodoAsDone, markTodoAsNotDone, updateTodoPriority, updateTodoDatetimedue, linkTodoToToday, unlinkTodoFromToday, deleteTodo };

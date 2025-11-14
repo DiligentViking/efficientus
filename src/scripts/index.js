@@ -14,15 +14,15 @@ if (!createProfile()) {
   createList('Odin Project');
   createList('Appointments');
   
-  createTodo(['Today'], 'Feed cats', 'Check if Shunty\'s bed is waterproof, while you\'re at it. The quick brown fox jumps over the lazy dog. Five frantic fat frogs.', null, 2);
-  createTodo(['Today', 'Odin Project'], 'Finish v1.0 of Todo app', 'Be efficient', null, 3);
-  createTodo(['Today'], 'Pickleball with S at the park', '', null, 2);
-  createTodo(['Today'], 'Buy pumpkin seeds', 'Make sure not to get the kernel-only stuff', null, 1);
-  createTodo(['Appointments'], 'Discuss the thing with E', 'On the phone, if not at the place', null, 2);
-  createTodo(['Today', 'Appointments'], 'Get D\'s birthday present', '', null, 2);
-  createTodo(['Today'], 'Research how to increase reading speed', '', null, 2);
-  createTodo(['Odin Project'], 'Check out other solutions', 'TOP guide article says it\'s essential', null, 2);
-  createTodo(['Odin Project'], 'Do "Linting" lesson', '', null, 2);
+  createTodo(['Today'], 'Feed cats', 'Check if Shunty\'s bed is waterproof, while you\'re at it. The quick brown fox jumps over the lazy dog. Five frantic fat frogs.', {}, 2);
+  createTodo(['Today', 'Odin Project'], 'Finish v1.0 of Todo app', 'Be efficient', {}, 3);
+  createTodo(['Today'], 'Pickleball with S at the park', '', {}, 2);
+  createTodo(['Today'], 'Buy pumpkin seeds', 'Make sure not to get the kernel-only stuff', {}, 1);
+  createTodo(['Appointments'], 'Discuss the thing with E', 'On the phone, if not at the place', {}, 2);
+  createTodo(['Today', 'Appointments'], 'Get D\'s birthday present', '', {}, 2);
+  createTodo(['Today'], 'Research how to increase reading speed', '', {}, 2);
+  createTodo(['Odin Project'], 'Check out other solutions', 'TOP guide article says it\'s essential', {}, 2);
+  createTodo(['Odin Project'], 'Do "Linting" lesson', '', {}, 2);
 }
 
 console.log(`
@@ -245,14 +245,15 @@ function renderTodo(todoData, create=false) {
   if (currentPlace === 'Today') {
     datetimedue.classList.add('anytime');
     datetimedueText = 'Anytime';
-    if (todoData.datetimedue) {
+    console.log(todoData.datetimedue);
+    if (todoData.datetimedue.hour) {
       datetimedue.classList.add('scheduled');
       datetimedueText = todoData.datetimedue;
     }
   } else {
     datetimedue.classList.add('anyday');
     datetimedueText = 'Anyday';
-    if (todoData.datetimedue) {
+    if (todoData.datetimedue.month && true == false) {
       datetimedue.classList.add('scheduled');
       datetimedueText = todoData.datetimedue;
     }
@@ -295,6 +296,16 @@ function incrementTime(node, min, max, increment=1, speed=0.2) {
     node.textContent = +node.textContent + increment;
     if (+node.textContent > max) node.textContent = min;
   }, speed * 1000);
+}
+
+function clearAutoRepeat() {
+  clearInterval(intervalToClear);
+  intervalToClear = null;
+  nodeToClear?.classList.remove('progress');
+}
+
+function updateTimeUntil() {
+
 }
 
 
@@ -402,10 +413,8 @@ timeModal.addEventListener('mousedown', (e) => {
   }
 });
 
-timeModal.addEventListener('mouseup', (e) => {
-  clearInterval(intervalToClear);
-  intervalToClear = null;
-  nodeToClear?.classList.remove('progress');
+timeModal.addEventListener('mouseup', () => {
+  clearAutoRepeat();
 });
 
 
@@ -517,7 +526,7 @@ function updateProgressScrollComponent(component, updatedContent) {
   setTimeout(() => {
     component.textContent = updatedContent;
     component.classList.remove('crossfade');
-  }, 0.5 * 1000);
+  }, 0.25 * 1000);
 }
 
 function incrementNumDone(decrement=false) {
@@ -594,9 +603,7 @@ window.addEventListener('keydown', (e) => {
     if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault();
       if (intervalToClear) {
-        clearInterval(intervalToClear);
-        intervalToClear = null;
-        nodeToClear?.classList.remove('progress');
+        clearAutoRepeat();
         return;
       }
       switch (e.target.id) {
