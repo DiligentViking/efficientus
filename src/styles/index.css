@@ -852,6 +852,12 @@ main {
   cursor: pointer;
 }
 
+#hour::selection,
+#meridien::selection,
+#minute::selection {
+  background-color: transparent;
+}
+
 
 /* Responsive Design */
 

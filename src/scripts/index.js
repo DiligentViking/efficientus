@@ -36,6 +36,8 @@ console.table(readAllTodos());
 
 /* Globals */
 
+let appLoad = true;
+
 let currentPlace;
 
 let keyboardFocusedTodo;
@@ -64,12 +66,16 @@ let numDoingCount = 0;
 
 const addTodo = document.querySelector('.add-todo');
 const newTodoModal = document.querySelector('#new-todo-modal');
-const newTodoForm = document.querySelector('#new-todo-form');
+const newTodoForm = newTodoModal.querySelector('#new-todo-form');
 
 const timeModal = document.querySelector('#time-modal');
+const hour = timeModal.querySelector('#hour');
+const minute = timeModal.querySelector('#minute');
+const meridien = timeModal.querySelector('#meridien');
+
 const dateModal = document.querySelector('#date-modal');
 
-let appLoad = true;
+let intervalToClear;
 
 
 /* Sidebar */
@@ -277,6 +283,16 @@ function renderTodo(todoData, create=false) {
 
 /* Todo Selection & Updation */
 
+function incrementTime(node, min, max, increment=1, speed=0.2) {
+  node.textContent = +node.textContent + increment;
+  if (+node.textContent > max) node.textContent = min;
+  intervalToClear = setInterval(() => {
+    node.textContent = +node.textContent + increment;
+    if (+node.textContent > max) node.textContent = min;
+  }, speed * 1000);
+}
+
+
 todoWrapper.addEventListener('click', (e) => {
   switch (e.target.classList[0]) {
     case 'checkbox':
@@ -364,6 +380,26 @@ todoWrapper.addEventListener('click', (e) => {
 
       openModal(timeModal);
   }
+});
+
+
+timeModal.addEventListener('mousedown', (e) => {
+  switch (e.target.id) {
+    case 'hour':
+      incrementTime(hour, 1, 12);
+      break;
+    case 'minute':
+      incrementTime(minute, 0, 59, 2);
+      break;
+    case 'meridien':
+      if (meridien.textContent === 'AM') meridien.textContent = 'PM';
+      else meridien.textContent = 'AM';
+  }
+});
+
+timeModal.addEventListener('mouseup', (e) => {
+  clearInterval(intervalToClear);
+  intervalToClear = null;
 });
 
 
@@ -547,7 +583,28 @@ function focusNewlyCreatedTodo() {
 }
 
 window.addEventListener('keydown', (e) => {
-  console.log(activeArea);
+  // console.log({activeArea, activeModal});
+  if (activeModal.id === 'time-modal') {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      if (intervalToClear) {
+        clearInterval(intervalToClear);
+        intervalToClear = null;
+        return;
+      }
+      switch (e.target.id) {
+        case 'hour':
+          incrementTime(hour, 1, 12);
+          break;
+        case 'minute':
+          incrementTime(minute, 0, 59, 2);
+          break;
+        case 'meridien':
+          if (meridien.textContent === 'AM') meridien.textContent = 'PM';
+          else meridien.textContent = 'AM';
+      }
+    }
+  }
   if (activeArea === 'MODAL') return;
   switch (e.key) {
     case 'Tab':
@@ -678,7 +735,7 @@ window.addEventListener('click', (e) => {
 });
 
 window.addEventListener('keyup', (e) => {
-  if (activeArea === 'MODAL') {
+  if (activeArea === 'MODAL') {  // perhaps use activeModal for this somehow, so that the todo can be focused sooner
     if (e.key === 'Enter') {
       focusNewlyCreatedTodo();
     }
