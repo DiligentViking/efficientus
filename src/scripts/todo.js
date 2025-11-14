@@ -73,7 +73,7 @@ const updateTodoDatetimedue = (todoID, hour, minute) => {
 
   const datetimedue = {
     month: today.getMonth() + 1,  // to account for Date's 0-indexed months!
-    day: today.getDate(),
+    day: today.getDate(),  // military (up to 24)
     hour: hour,
     minute: minute,
   };
@@ -108,4 +108,4 @@ const deleteTodo = (todoId, trash=true, todos=getTodos()) => {
 };
 
 
-export { createTodo, readAllTodos, getLastTodoIndex, markTodoAsDone, markTodoAsNotDone, updateTodoPriority, updateTodoDatetimedue, linkTodoToToday, unlinkTodoFromToday, deleteTodo };
+export { createTodo, readAllTodos, getLastTodoIndex, markTodoAsDone, markTodoAsNotDone, updateTodoPriority, getTodoDatetimedue, updateTodoDatetimedue, linkTodoToToday, unlinkTodoFromToday, deleteTodo };

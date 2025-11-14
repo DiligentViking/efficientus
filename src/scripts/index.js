@@ -2,7 +2,7 @@ import '../styles/index.css';
 import scrollImg from '../assets/images/scroll-outline.svg';
 
 import { createProfile, createList, readLists } from './storage.js';
-import { createTodo, readAllTodos, getLastTodoIndex, markTodoAsDone, markTodoAsNotDone, updateTodoPriority, linkTodoToToday, unlinkTodoFromToday, deleteTodo } from './todo.js';
+import { createTodo, readAllTodos, getLastTodoIndex, markTodoAsDone, markTodoAsNotDone, updateTodoPriority, getTodoDatetimedue, updateTodoDatetimedue, linkTodoToToday, unlinkTodoFromToday, deleteTodo } from './todo.js';
 
 
 /* Initial Population */
@@ -77,6 +77,8 @@ const dateModal = document.querySelector('#date-modal');
 
 let intervalToClear;
 let nodeToClear;
+
+let modified;
 
 
 /* Sidebar */
@@ -155,7 +157,6 @@ function renderTodoListDOM() {
 
   for (const todoData of todoArray) {
     renderTodo(todoData);
-    console.log({numTotalCount});
   }
 
   // Progress-scroll (2) //
@@ -245,10 +246,22 @@ function renderTodo(todoData, create=false) {
   if (currentPlace === 'Today') {
     datetimedue.classList.add('anytime');
     datetimedueText = 'Anytime';
-    console.log(todoData.datetimedue);
+    console.log(todoData.datetimedue.hour);
     if (todoData.datetimedue.hour) {
-      datetimedue.classList.add('scheduled');
-      datetimedueText = todoData.datetimedue;
+      const zeroPaddedMinute = (todoData.datetimedue.minute < 10) ? `0${todoData.datetimedue.minute}` : todoData.datetimedue.minute;
+      let hourString;
+      let meridienString;
+      if (todoData.datetimedue.hour > 12) {
+        hourString = todoData.datetimedue.hour - 12;
+        meridienString = 'pm';
+      } else {
+        hourString = todoData.datetimedue.hour;
+        meridienString = 'am';
+      }
+      datetimedueText = `${hourString}:${zeroPaddedMinute}.${meridienString}`;
+      // Determining Color //
+      datetimedue.classList.add('v1timeset');
+      // ----- //
     }
   } else {
     datetimedue.classList.add('anyday');
@@ -394,7 +407,30 @@ todoWrapper.addEventListener('click', (e) => {
       timeModal.style.top = `${datetimedueCoords.bottom + window.scrollY}px`;
       timeModal.style.left = `${datetimedueCoords.left}px`;
 
-      openModal(timeModal);
+      if (currentPlace === 'Today') {
+        openModal(timeModal);
+
+        const datetimedue = getTodoDatetimedue(datetimedueTodoID);
+
+        console.log(datetimedue);
+        if (!datetimedue.hour) {
+          console.log('why is nothing showing');
+          hour.textContent = '1';
+          meridien.textContent = 'am';
+          minute.textContent = '0';
+          return;
+        }
+
+        if (datetimedue.hour > 12) {
+          hour.textContent = datetimedue.hour - 12;
+          meridien.textContent = 'pm';
+        } else {
+          hour.textContent = datetimedue.hour;
+          meridien.textContent = 'am';
+        }
+        minute.textContent = datetimedue.minute;
+      }
+
   }
 });
 
@@ -402,14 +438,18 @@ todoWrapper.addEventListener('click', (e) => {
 timeModal.addEventListener('mousedown', (e) => {
   switch (e.target.id) {
     case 'hour':
+      modified = true;
       incrementTime(hour, 1, 12);
       break;
     case 'minute':
+      modified = true;
       incrementTime(minute, 0, 59, 2);
       break;
     case 'meridien':
-      if (meridien.textContent === 'AM') meridien.textContent = 'PM';
-      else meridien.textContent = 'AM';
+      modified = true;
+      if (meridien.textContent === 'am') meridien.textContent = 'pm';
+      else meridien.textContent = 'am';
+      break;
   }
 });
 
@@ -466,8 +506,24 @@ newTodoModal.addEventListener('cancel', (e) => {
 });
 timeModal.addEventListener('cancel', (e) => {
   e.preventDefault();
-  console.log({activeElem: document.activeElement});
   closeModal(timeModal);
+});
+timeModal.addEventListener('close', () => {
+  if (!modified) return;
+  modified = false;
+
+  const datetimedueButton = todoWrapper.querySelector(`.datetimedue[data-todoid="${timeModal.dataset.todoid}"]`);
+  const zeroPaddedMinute = (+minute.textContent < 10) ? `0${minute.textContent}` : minute.textContent;
+  datetimedueButton.textContent = '';
+  datetimedueButton.append(document.createElement('span'), `${hour.textContent}:${zeroPaddedMinute}.${meridien.textContent}`);
+
+  datetimedueButton.classList.add('v1timeset');
+
+  updateTodoDatetimedue(
+    timeModal.dataset.todoid,
+    +hour.textContent + ((meridien === 'pm') ? 12 : 0),
+    +minute.textContent
+  );
 });
 
 window.addEventListener('click', (e) => {
@@ -608,14 +664,17 @@ window.addEventListener('keydown', (e) => {
       }
       switch (e.target.id) {
         case 'hour':
+          modified = true;
           incrementTime(hour, 1, 12);
           break;
         case 'minute':
+          modified = true;
           incrementTime(minute, 0, 59, 2);
           break;
         case 'meridien':
-          if (meridien.textContent === 'AM') meridien.textContent = 'PM';
-          else meridien.textContent = 'AM';
+          modified = true;
+          if (meridien.textContent === 'am') meridien.textContent = 'pm';
+          else meridien.textContent = 'am';
       }
     }
   }

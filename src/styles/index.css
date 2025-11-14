@@ -597,6 +597,7 @@ main {
   width: 0.875rem;
   height: 0.875rem;
   margin-right: 0.125rem;
+  flex-shrink: 0;
 }
 
 .priority:hover,
@@ -630,8 +631,12 @@ main {
 }
 
 .datetimedue {
-  width: 4.34375rem;
+  width: 4.4rem;
   margin-right: 1rem;
+}
+
+.datetimedue.v1timeset {
+  color: rgb(216, 68, 9);
 }
 
 .datetimedue.anytime > span {
