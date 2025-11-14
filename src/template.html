@@ -45,7 +45,7 @@
     <form id="new-todo-form">
       <div class="input-row">
         <label for="title">Title</label>
-        <input type="text" id="title" maxlength="40">
+        <input id="title" type="text" maxlength="40">
       </div>
       <div class="input-row">
         <label for="notes">Notes</label>
@@ -54,7 +54,19 @@
       <button id="add-todo" tabindex="0">Add Todo</button>
     </form>
   </dialog>
-  <dialog id="time-modal">asd fewqrwer</dialog>
+  <dialog id="time-modal">
+    <form id="time-modal-form">
+      <div class="input-row">
+        <label id="hour-label">Hour:</label>
+        <button id="hour">1</button>
+        <button id="meridien">AM</button>
+      </div>
+      <div class="input-row">
+        <label id="minute-label">Minute:</label>
+        <button id="minute">0</button>
+      </div>
+    </form>
+  </dialog>
   <div id="date-modal"></div>
 </body>
 </html>

@@ -441,14 +441,16 @@ newTodoForm.addEventListener('submit', (e) => {
   todoData['todoID'] = getLastTodoIndex();
   
   closeModal(newTodoModal);
-  
+
   setTimeout(() => {
     renderTodo(todoData, currentPlace, true);
-  
+    
     incrementNumTotal();
-
+    
     addTodo.classList.add('push-down');
   }, 0.00 * 1000);
+
+  // focusNewlyCreatedTodo();
 
   setTimeout(() => {
     addTodo.classList.remove('push-down');
@@ -529,6 +531,19 @@ function moveToNextTabIndex(areaNode, moveBy=1) {
   if (elemToFocus) {
     elemToFocus.focus();
   }
+}
+
+function focusNewlyCreatedTodo() {
+  setTimeout(() => {
+    const createdTodo = todoWrapper.querySelector('.todo:last-child');
+    createdTodo.querySelector('.checkbox').focus();
+    moveToNextTabIndex(createdTodo);
+    createdTodo.classList.add('keyboard-hover');
+    if (keyboardFocusedTodo) {
+      keyboardFocusedTodo.classList.remove('keyboard-hover');
+    }
+    keyboardFocusedTodo = createdTodo;
+  }, 0.5 * 1000);
 }
 
 window.addEventListener('keydown', (e) => {
@@ -665,16 +680,7 @@ window.addEventListener('click', (e) => {
 window.addEventListener('keyup', (e) => {
   if (activeArea === 'MODAL') {
     if (e.key === 'Enter') {
-      setTimeout(() => {
-        const createdTodo = todoWrapper.querySelector('.todo:last-child');
-        createdTodo.querySelector('.checkbox').focus();
-        moveToNextTabIndex(createdTodo);
-        createdTodo.classList.add('keyboard-hover');
-        if (keyboardFocusedTodo) {
-          keyboardFocusedTodo.classList.remove('keyboard-hover');
-        }
-        keyboardFocusedTodo = createdTodo;
-      }, 0.5 * 1000);
+      focusNewlyCreatedTodo();
     }
     return;
   }

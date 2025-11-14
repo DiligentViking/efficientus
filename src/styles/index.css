@@ -716,7 +716,8 @@ main {
 /* Todo Modal */
 
 #new-todo-modal {
-  background: inherit;
+  background-color: rgb(240, 194, 135, 1);
+  color: rgb(40, 25, 15);
   outline: none;
   border: 1px solid rgb(80, 50, 25);
   border-radius: 1.5rem;
@@ -739,7 +740,6 @@ main {
 }
 
 #new-todo-modal > h2 {
-  color: rgb(40, 25, 15);
   font-size: 1.125rem;
   /* border-bottom: 1px solid rgb(120 86 53 / 0.75); */
   padding: 0.25rem 0.75rem 0.25rem 0.75rem;
@@ -757,7 +757,6 @@ main {
 }
 
 .input-row > label {
-  color: rgb(40, 25, 15);
   font-size: 0.875rem;
   width: 2.5rem;
   flex-shrink: 0;
@@ -765,9 +764,11 @@ main {
 }
 
 .input-row > input,
-.input-row > textarea {
+.input-row > textarea,
+.input-row > button {
   /* background-color: rgb(245, 210, 160); */
   background-color: rgb(240, 194, 135, 1);
+  color: black;
   font-family: inherit;
   font-size: 1rem;
   border: 1px solid rgb(80, 50, 25);
@@ -806,10 +807,50 @@ main {
 /* Datetime Modals */
 
 #time-modal {
+  background-color: rgb(240, 194, 135);
+  color: rgb(40, 25, 15);
+  box-shadow: 2px 2px 4px rgb(0, 0, 0, 0.3);
+  border: 1px solid rgb(80, 50, 25);
+  border-radius: 0.0rem 0.5rem 0.5rem 0.5rem;
+  padding: 0.5rem;
+  width: 10.5rem;
   position: absolute;
+  opacity: 0;
+  transition: opacity 0.25s ease;
 }
 
+#time-modal.open {
+  opacity: 1;
+  transition: opacity 0.25s ease;
+}
 
+#time-modal-form > .input-row > label {
+  margin-top: 0.25rem;
+}
+
+#hour-label,
+#minute-label {
+  width: auto;
+  margin-right: 0.25rem;
+}
+
+#hour,
+#meridien,
+#minute {
+  background-color: rgb(245, 210, 160);
+  color: black;
+  flex: 0;
+  width: 2.5rem;
+  min-width: 2.5rem;
+  transition: background-color 0.25s ease;
+}
+
+#hour:hover,
+#meridien:hover,
+#minute:hover {
+  background-color: rgb(250, 230, 190);
+  cursor: pointer;
+}
 
 
 /* Responsive Design */
