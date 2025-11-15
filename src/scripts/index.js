@@ -1,5 +1,6 @@
 import '../styles/index.css';
 import scrollImg from '../assets/images/scroll-outline.svg';
+import archiveImg from '../assets/images/archive-svgrepo-com.svg';
 
 import { createProfile, createList, readLists } from './storage.js';
 import { createTodo, readAllTodos, getLastTodoIndex, markTodoAsDone, markTodoAsNotDone, updateTodoPriority, getTodoDatetimedue, updateTodoDatetimedue, linkTodoToToday, unlinkTodoFromToday, deleteTodo } from './todo.js';
@@ -605,6 +606,7 @@ newListForm.addEventListener('submit', (e) => {
 
   setTimeout(() => {
     newListForm.querySelector('#list-name').value = '';
+    sidebarItem.classList.remove('no-opacity', 'yes-opacity', 'opacity-transition');
   }, 0.5 * 1000);
 
   createList(listName);
