@@ -82,6 +82,7 @@ const dateModal = document.querySelector('#date-modal');
 
 const newList = document.querySelector('.new-list');
 const newListModal = document.querySelector('#new-list-modal');
+const newListForm = document.querySelector('#new-list-form');
 
 
 /* Sidebar */
@@ -416,9 +417,7 @@ todoWrapper.addEventListener('click', (e) => {
 
         const datetimedue = getTodoDatetimedue(datetimedueTodoID);
 
-        console.log(datetimedue);
         if (!datetimedue.hour) {
-          console.log('why is nothing showing');
           hour.textContent = '1';
           meridien.textContent = 'am';
           minute.textContent = '0';
@@ -576,6 +575,39 @@ newTodoForm.addEventListener('submit', (e) => {
     newTodoForm.querySelector('#title').value = '';
     newTodoForm.querySelector('#notes').value = '';
   }, 0.5 * 1000);
+});
+newListForm.addEventListener('submit', (e) => {
+  e.preventDefault();
+
+  const listName = newListForm.querySelector('#list-name').value;
+
+  // Same as above //
+  const sidebarItem = document.createElement('li');
+
+  sidebarItem.setAttribute('class', 'sidebar-item');
+  sidebarItem.setAttribute('tabindex', '0');
+  sidebarItem.dataset.list = listName;
+  sidebarItem.classList.add('no-opacity', 'opacity-transition');  // except this
+
+  const img = document.createElement('img');
+  img.src = scrollImg;
+
+  sidebarItem.append(img, listName);
+
+  sidebarGroupLists.appendChild(sidebarItem);
+  // ----- //
+
+  setTimeout(() => {
+    sidebarItem.classList.add('yes-opacity');
+  }, 0.01 * 1000);  // a big hack
+
+  closeModal(newListModal);
+
+  setTimeout(() => {
+    newListForm.querySelector('#list-name').value = '';
+  }, 0.5 * 1000);
+
+  createList(listName);
 });
 
 
