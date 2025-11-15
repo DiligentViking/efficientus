@@ -8,7 +8,7 @@ import { createTodo, readAllTodos, getLastTodoIndex, markTodoAsDone, markTodoAsN
 
 /* Initial Population */
 
-localStorage.clear();  // Devving
+// localStorage.clear();  // Devving
 
 if (!createProfile()) {
   createList('Today');
