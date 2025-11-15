@@ -501,6 +501,36 @@ main {
   }
 }
 
+.todo.delete {
+  position: absolute;
+  width: 100%;
+  animation: deleteTodo 0.25s ease;
+  animation-fill-mode: forwards;
+}
+
+@keyframes deleteTodo {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
+.move-up {
+  animation: moveUp 0.5s ease;
+}
+
+@keyframes moveUp {
+  0% {
+    translate: 0 5.25rem;
+  }
+  100% {
+    translate: 0 0rem;
+  }
+}
+
 .checkbox {
   appearance: none;
   background: none;
@@ -688,6 +718,33 @@ main {
   height: 100%;
 }
 /* ----- */
+
+.archive-todo {
+  border-radius: 0.5rem;
+  padding: 0.25rem;
+  width: 1.75rem;
+  margin-top: auto;
+  margin-bottom: auto;
+  margin-left: auto;
+  opacity: 0;
+  transition: background-color 0.75s ease, opacity 0.75s ease;
+}
+
+.todo:hover > .archive-todo {
+  opacity: 0.25;
+}
+
+.archive-todo:hover {
+  background-color: rgb(0, 0, 0, 0.15);
+  opacity: 0.75 !important;
+  cursor: pointer;
+  transition: background-color 0.25s ease, opacity 0.25s ease;
+}
+
+.archive-todo > img {
+  transform: translate(0px, 1px);
+  pointer-events: none;
+}
 
 
 /* Add Todo */

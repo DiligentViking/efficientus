@@ -15,8 +15,8 @@ if (!createProfile()) {
   createList('Odin Project');
   createList('Appointments');
   
-  createTodo(['Today'], 'Feed cats', 'Check if Shunty\'s bed is waterproof, while you\'re at it. The quick brown fox jumps over the lazy dog. Five frantic fat frogs.', {}, 2);
-  createTodo(['Today', 'Odin Project'], 'Finish v1.0 of Todo app', 'Be efficient', {}, 3);
+  createTodo(['Today'], 'Feed cats', 'Check if Shunty\'s bed is waterproof, while you\'re at it. The quick brown fox jumps over the lazy dog. Five frantic fat frogs.', {}, 2, 1);
+  createTodo(['Today', 'Odin Project'], 'Finish v1.0 of Todo app', 'Be efficient', {}, 3, 1);
   createTodo(['Today'], 'Pickleball with S at the park', '', {}, 2);
   createTodo(['Today'], 'Buy pumpkin seeds', 'Make sure not to get the kernel-only stuff', {}, 1);
   createTodo(['Appointments'], 'Discuss the thing with E', 'On the phone, if not at the place', {}, 2);
@@ -296,6 +296,16 @@ function renderTodo(todoData, create=false) {
 
   todoElem.appendChild(stackGroup);
 
+  const archiveTodo = document.createElement('button');
+  archiveTodo.classList.add('archive-todo');
+  archiveTodo.dataset.todoid = todoData.todoID;
+  archiveTodo.title = 'archive todo';
+  const archiveTodoIcon = document.createElement('img');
+  archiveTodoIcon.src = archiveImg;
+  archiveTodo.appendChild(archiveTodoIcon);
+
+  todoElem.appendChild(archiveTodo);
+
   todoWrapper.appendChild(todoElem);
 
   numTotalCount++;
@@ -434,7 +444,28 @@ todoWrapper.addEventListener('click', (e) => {
         }
         minute.textContent = datetimedue.minute;
       }
+      break;
+    case 'archive-todo':
+      const archiveTodoID = e.target.dataset.todoid;
 
+      deleteTodo(archiveTodoID);
+
+      const todoToDelete = todoWrapper.querySelector(`.todo[data-todoid="${archiveTodoID}"]`);
+      todoToDelete.classList.add('delete');
+
+      const todosToMoveUp = todoWrapper.querySelectorAll(`.todo[data-todoid="${archiveTodoID}"] ~ .todo`);
+      console.log(todosToMoveUp);
+      for (const todo of todosToMoveUp) {
+        todo.classList.add('move-up');
+        addTodo.classList.add('move-up');
+      }
+      setTimeout (() => {
+        for (const todo of todosToMoveUp) {
+          todo.classList.remove('move-up');
+          addTodo.classList.remove('move-up');
+        }
+      }, 0.5 * 1000);
+      break;
   }
 });
 

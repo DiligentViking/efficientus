@@ -22,7 +22,7 @@ const readAllTodos = (list, todos=getTodos()) => {
 
   console.log(`Todos for "${list}":`);
   for (let x = 0; x < todos.length; x++) {
-    if (!list || todos[x].lists.includes(list) && (!todos[x].lists.includes('trash') || list == 'trash')) {
+    if (!list || todos[x].lists.includes(list) && (!todos[x].lists.includes('archive') || list == 'archive')) {
       todos[x]['todoID'] = x;
       
       matchingTodos.push(todos[x]);
@@ -99,9 +99,9 @@ const unlinkTodoFromToday = (todoID, todos=getTodos()) => {
 };
 
 
-const deleteTodo = (todoId, trash=true, todos=getTodos()) => {
-  if (trash) {
-    todos[todoId].lists.push('trash');
+const deleteTodo = (todoId, archive=true, todos=getTodos()) => {
+  if (archive) {
+    todos[todoId].lists.push('archive');
 
     setTodos(todos);
   }
